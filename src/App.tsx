@@ -4,6 +4,8 @@ import { FaHandRock, FaHandScissors } from "react-icons/fa";
 import { LiaToiletPaperSolid } from "react-icons/lia";
 import { OPTIONS, WINNER_OPTIONS } from "./constants.tsx";
 import Modal from "./components/Modal";
+import Options from "./components/Options.tsx";
+import confetti from "canvas-confetti";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,6 +42,7 @@ function App() {
     }
     if (WINNER_OPTIONS[option] == cpuOption.value) {
       setIsOpen(true);
+      confetti();
       setText("Ganaste");
       setUserOption(element);
       setCpuOption(cpuOption.element);
@@ -57,34 +60,28 @@ function App() {
   return (
     <>
       <h1 className="text-2xl text-center text-white">Rock Paper Scissors</h1>
-      <main>
-        <ul className="flex flex-col items-center pt-6 text-white gap-3">
-          <li
-            className="grid place-content-center border-2 w-[200px] h-[200px] text-6xl"
-            onClick={() => game(OPTIONS.rock.value, OPTIONS.rock.element)}
-          >
-            <FaHandRock />
-          </li>
-          <li
-            className="grid place-content-center border-2 w-[200px] h-[200px] text-6xl"
-            onClick={() => game(OPTIONS.paper.value, OPTIONS.paper.element)}
-          >
-            <LiaToiletPaperSolid />
-          </li>
-          <li
-            className="grid place-content-center border-2 w-[200px] h-[200px] text-6xl"
-            onClick={() =>
+      <main className="grid place-content-center h-full pb-4 overflow-hidden">
+        <ul className="flex flex-col items-center pt-6 text-white gap-3 md:flex-row md:justify-center">
+          <Options
+            action={() => game(OPTIONS.rock.value, OPTIONS.rock.element)}
+            icon={<FaHandRock />}
+          />
+          <Options
+            action={() => game(OPTIONS.paper.value, OPTIONS.paper.element)}
+            icon={<LiaToiletPaperSolid />}
+          />
+          <Options
+            action={() =>
               game(OPTIONS.scissors.value, OPTIONS.scissors.element)
             }
-          >
-            <FaHandScissors />
-          </li>
+            icon={<FaHandScissors />}
+          />
         </ul>
       </main>
       {isOpen ? (
         <div>
           <Modal text={text} handleClose={closeModal}>
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col text-white items-center gap-2">
               <section>
                 <p className="text-center">Tu</p>
                 <span className="text-6xl">{userOption}</span>
