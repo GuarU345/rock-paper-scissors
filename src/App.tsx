@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import { FaHandRock, FaHandScissors } from "react-icons/fa";
 import { LiaToiletPaperSolid } from "react-icons/lia";
@@ -6,26 +6,14 @@ import { OPTIONS, WINNER_OPTIONS } from "./constants.tsx";
 import Modal from "./components/Modal";
 import Options from "./components/Options.tsx";
 import confetti from "canvas-confetti";
+import Results from "./components/Results.tsx";
+import { generateOptionOfCpu } from "./functions/random.ts";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState("");
   const [userOption, setUserOption] = useState<JSX.Element | undefined>();
   const [cpuOption, setCpuOption] = useState<JSX.Element | undefined>();
-
-  const generateOptionOfCpu = () => {
-    const optionSelected = Math.floor(Math.random() * (4 - 1) + 1);
-    if (optionSelected === 1) {
-      const { value, element } = OPTIONS.rock;
-      return { value, element };
-    } else if (optionSelected === 2) {
-      const { value, element } = OPTIONS.paper;
-      return { value, element };
-    } else {
-      const { value, element } = OPTIONS.scissors;
-      return { value, element };
-    }
-  };
 
   const closeModal = () => {
     setIsOpen(false);
@@ -55,8 +43,6 @@ function App() {
     return;
   };
 
-  useEffect(() => {}, []);
-
   return (
     <>
       <h1 className="text-2xl text-center text-white">Rock Paper Scissors</h1>
@@ -81,17 +67,7 @@ function App() {
       {isOpen ? (
         <div>
           <Modal text={text} handleClose={closeModal}>
-            <div className="flex flex-col text-white items-center gap-2">
-              <section>
-                <p className="text-center">Tu</p>
-                <span className="text-6xl">{userOption}</span>
-              </section>
-
-              <section>
-                <p className="text-center">Computadora</p>
-                <span className="text-6xl [&>svg]:m-auto">{cpuOption}</span>
-              </section>
-            </div>
+            <Results user={userOption} cpu={cpuOption} />
           </Modal>
         </div>
       ) : null}
