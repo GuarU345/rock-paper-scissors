@@ -23,7 +23,7 @@ function App() {
     const cpuOption = generateOptionOfCpu();
     if (option === cpuOption.value) {
       setIsOpen(true);
-      setText("Empate");
+      setText("Draw");
       setUserOption(element);
       setCpuOption(cpuOption.element);
       return;
@@ -31,13 +31,13 @@ function App() {
     if (WINNER_OPTIONS[option] == cpuOption.value) {
       setIsOpen(true);
       confetti();
-      setText("Ganaste");
+      setText("You Win");
       setUserOption(element);
       setCpuOption(cpuOption.element);
       return;
     }
     setIsOpen(true);
-    setText("Perdiste");
+    setText("You Lost");
     setUserOption(element);
     setCpuOption(cpuOption.element);
     return;
