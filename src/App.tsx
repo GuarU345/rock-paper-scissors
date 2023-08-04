@@ -3,7 +3,7 @@ import "./App.css";
 function App() {
   return (
     <>
-      <h1>Rock Paper Scissors</h1>
+      <h1 className="text-6xl">Rock Paper Scissors</h1>
     </>
   );
 }
