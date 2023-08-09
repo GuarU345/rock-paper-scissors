@@ -67,7 +67,7 @@ function App() {
       {isOpen ? (
         <div>
           <Modal text={text} handleClose={closeModal}>
-            <Results user={userOption} cpu={cpuOption} />
+            <Results user={userOption} cpu={cpuOption} action={closeModal} />
           </Modal>
         </div>
       ) : null}
