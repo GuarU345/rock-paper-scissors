@@ -1,25 +1,45 @@
-import { useEffect, useState } from "react";
-import { FaHandRock, FaHandScissors } from "react-icons/fa";
-import { LiaToiletPaperSolid } from "react-icons/lia";
-import { BsScissors } from "react-icons/bs";
-import { GiStoneBlock } from "react-icons/gi";
-import { OPTIONS, WINNER_OPTIONS } from "../constants.tsx";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Modal from "../components/Modal";
 import Options from "../components/Options.tsx";
 import confetti from "canvas-confetti";
 import Results from "../components/Results.tsx";
+import { useEffect, useState } from "react";
+import { BsScissors } from "react-icons/bs";
+import { GiStoneBlock } from "react-icons/gi";
+import { OPTIONS_v2, WINNER_OPTIONS } from "../constants.tsx";
 import { generateOptionOfCpu } from "../functions/random.ts";
 import { Link } from "react-router-dom";
+import { getOptions } from "../services/game.ts";
+import { GameOptions, OptionsV2 } from "../types";
 
 const Game = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [options, setOptions] = useState([]);
   const [text, setText] = useState("");
   const [userOption, setUserOption] = useState<JSX.Element | undefined>();
   const [cpuOption, setCpuOption] = useState<JSX.Element | undefined>();
 
   const closeModal = () => {
     setIsOpen(false);
+  };
+
+  const getGameOptions = async () => {
+    const resp = await getOptions();
+    const data = resp
+      .flatMap((r: GameOptions) =>
+        OPTIONS_v2.map((o: OptionsV2) => {
+          if (o.value !== r.value) return;
+          return {
+            name: r.name,
+            value: o.value,
+            element: o.element,
+            id: r.id,
+          };
+        })
+      )
+      .filter((r: any) => r !== undefined);
+    setOptions(data);
   };
 
   const game = (option: number, element: JSX.Element) => {
@@ -45,11 +65,17 @@ const Game = () => {
     setCpuOption(cpuOption.element);
     return;
   };
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 900);
   }, []);
+
+  useEffect(() => {
+    getGameOptions();
+  }, []);
+
   return (
     <>
       {loading ? (
@@ -85,20 +111,13 @@ const Game = () => {
           </h1>
           <main className="grid place-content-center h-[95%] pb-4 gap-y-2">
             <ul className="flex flex-col items-center pt-6 text-white gap-3 md:flex-row md:justify-center">
-              <Options
-                action={() => game(OPTIONS.rock.value, OPTIONS.rock.element)}
-                icon={<FaHandRock />}
-              />
-              <Options
-                action={() => game(OPTIONS.paper.value, OPTIONS.paper.element)}
-                icon={<LiaToiletPaperSolid />}
-              />
-              <Options
-                action={() =>
-                  game(OPTIONS.scissors.value, OPTIONS.scissors.element)
-                }
-                icon={<FaHandScissors />}
-              />
+              {options.map((option) => (
+                <Options
+                  action={() => game(option.value, option.element)}
+                  icon={option.element}
+                  key={option.id}
+                ></Options>
+              ))}
             </ul>
             <Link
               type="button"
