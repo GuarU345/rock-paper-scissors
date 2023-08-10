@@ -1,8 +1,8 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { createRoom, getDisponibleRooms } from "../services/game";
 import { Room } from "../types";
-import { Link } from "react-router-dom";
 import Modal from "../components/Modal";
+import RoomLink from "../components/RoomLink";
 
 const Room = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -46,13 +46,7 @@ const Room = () => {
       <section className="flex flex-col p-4 gap-2 h-5/6">
         <ul className="flex flex-col gap-2 h-5/6 overflow-y-auto sm:items-center md:items-center xl:items-center xl:text-lg">
           {rooms.map((room) => (
-            <Link
-              key={room.id}
-              to="/game"
-              className="flex font-bold items-center gap-2 rounded-t-md text-white w-full border-2 p-4 h-10 hover:border-sky-400 sm:w-1/2 md:w-1/2 xl:w-1/2 xl:p-6"
-            >
-              {room.name}
-            </Link>
+            <RoomLink room={room}></RoomLink>
           ))}
         </ul>
         <div className="flex justify-end mt-auto h-[10%]">
