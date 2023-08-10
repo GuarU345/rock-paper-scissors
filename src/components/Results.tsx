@@ -19,7 +19,7 @@ const Results = ({ user, cpu, action }: Props) => {
         <span className="text-6xl [&>svg]:m-auto">{cpu}</span>
       </section>
       <section>
-        <button onClick={action} className="p-2 text-white border-2">
+        <button onClick={action} className="p-2 mt-4 text-white border-2">
           Restart game
         </button>
       </section>
