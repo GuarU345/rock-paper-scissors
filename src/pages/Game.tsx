@@ -103,7 +103,7 @@ const Game = () => {
             <Link
               type="button"
               to="/"
-              className="text-white text-center border-2 xl:w-[32.75%] xl:m-auto xl:py-4 hover:border-red-600"
+              className="text-white text-center border-2 md:w-[32.75%] md:py-2 md:m-auto xl:w-[32.75%] xl:m-auto xl:py-4 hover:border-red-600"
             >
               Back home
             </Link>
