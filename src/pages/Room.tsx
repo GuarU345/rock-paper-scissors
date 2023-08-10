@@ -23,7 +23,7 @@ const Room = () => {
       await getRooms();
       closeModal();
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
     }
   };
 
