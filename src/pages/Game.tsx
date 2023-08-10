@@ -83,7 +83,7 @@ const Game = () => {
               <BsScissors />
             </span>
           </h1>
-          <main className="grid place-content-center h-[95%] pb-4 gap-y-1">
+          <main className="grid place-content-center h-[95%] pb-4 gap-y-2">
             <ul className="flex flex-col items-center pt-6 text-white gap-3 md:flex-row md:justify-center">
               <Options
                 action={() => game(OPTIONS.rock.value, OPTIONS.rock.element)}
@@ -103,7 +103,7 @@ const Game = () => {
             <Link
               type="button"
               to="/"
-              className="text-white text-center border-2 md:w-[32.75%] md:py-2 md:m-auto xl:w-[32.75%] xl:m-auto xl:py-4 hover:border-red-600"
+              className="text-white text-center border-2 py-2 md:w-[32.75%] md:py-2 md:m-auto xl:w-[32.75%] xl:m-auto xl:py-4 hover:border-red-600"
             >
               Back home
             </Link>
