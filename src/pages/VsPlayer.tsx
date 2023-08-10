@@ -1,82 +1,79 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
-import Options from "../components/Options";
-import { OPTIONS_v2, WINNER_OPTIONS } from "../constants";
-import { getOptions } from "../services/game";
-import { GameOptions, OptionsV2 } from "../types";
-import { generateOptionOfCpu } from "../functions/random";
-import confetti from "canvas-confetti";
-import { BsScissors } from "react-icons/bs";
-import { GiStoneBlock } from "react-icons/gi";
-import { Link } from "react-router-dom";
-import Modal from "../components/Modal";
-import Results from "../components/Results";
+// import { useEffect, useState } from "react";
+// import Options from "../components/Options";
+// import { OPTIONS_v2, WINNER_OPTIONS } from "../constants";
+// import { getOptions } from "../services/game";
+// import { GameOptions, OptionsV2 } from "../types";
+// import { generateOptionOfCpu } from "../functions/random";
+// import confetti from "canvas-confetti";
+// import { BsScissors } from "react-icons/bs";
+// import { GiStoneBlock } from "react-icons/gi";
+// import { Link } from "react-router-dom";
+// import Modal from "../components/Modal";
+// import Results from "../components/Results";
 
 const VsPlayer = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [options, setOptions] = useState([]);
-  const [text, setText] = useState("");
-  const [userOption, setUserOption] = useState<JSX.Element | undefined>();
-  const [cpuOption, setCpuOption] = useState<JSX.Element | undefined>();
-  const [finalized, setIsFinalized] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
+  // const [loading, setLoading] = useState(true);
+  // const [options, setOptions] = useState([]);
+  // const [text, setText] = useState("");
+  // const [userOption, setUserOption] = useState<JSX.Element | undefined>();
+  // const [cpuOption, setCpuOption] = useState<JSX.Element | undefined>();
+  const finalized = false;
 
-  const getGameOptions = async () => {
-    const resp = await getOptions();
-    const data = resp
-      .flatMap((r: GameOptions) =>
-        OPTIONS_v2.map((o: OptionsV2) => {
-          if (o.value !== r.value) return;
-          return {
-            name: r.name,
-            value: o.value,
-            element: o.element,
-            id: r.id,
-          };
-        })
-      )
-      .filter((r: any) => r !== undefined);
-    setOptions(data);
-  };
+  // const getGameOptions = async () => {
+  //   const resp = await getOptions();
+  //   const data = resp
+  //     .flatMap((r: GameOptions) =>
+  //       OPTIONS_v2.map((o: OptionsV2) => {
+  //         if (o.value !== r.value) return;
+  //         return {
+  //           name: r.name,
+  //           value: o.value,
+  //           element: o.element,
+  //           id: r.id,
+  //         };
+  //       })
+  //     )
+  //     .filter((r: any) => r !== undefined);
+  //   setOptions(data);
+  // };
 
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  // const closeModal = () => {
+  //   setIsOpen(false);
+  // };
 
-  const game = (option: number, element: JSX.Element) => {
-    const cpuOption = generateOptionOfCpu();
-    if (option === cpuOption.value) {
-      setIsOpen(true);
-      setText("Draw");
-      setUserOption(element);
-      setCpuOption(cpuOption.element);
-      return;
-    }
-    if (WINNER_OPTIONS[option] == cpuOption.value) {
-      setIsOpen(true);
-      confetti();
-      setText("You Win");
-      setUserOption(element);
-      setCpuOption(cpuOption.element);
-      return;
-    }
-    setIsOpen(true);
-    setText("You Lost");
-    setUserOption(element);
-    setCpuOption(cpuOption.element);
-    return;
-  };
+  // const game = (option: number, element: JSX.Element) => {
+  //   const cpuOption = generateOptionOfCpu();
+  //   if (option === cpuOption.value) {
+  //     setIsOpen(true);
+  //     setText("Draw");
+  //     setUserOption(element);
+  //     setCpuOption(cpuOption.element);
+  //     return;
+  //   }
+  //   if (WINNER_OPTIONS[option] == cpuOption.value) {
+  //     setIsOpen(true);
+  //     confetti();
+  //     setText("You Win");
+  //     setUserOption(element);
+  //     setCpuOption(cpuOption.element);
+  //     return;
+  //   }
+  //   setIsOpen(true);
+  //   setText("You Lost");
+  //   setUserOption(element);
+  //   setCpuOption(cpuOption.element);
+  //   return;
+  // };
 
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
   return (
     <>
       {finalized === false ? (
         <h1 className="text-white text-6xl text-center">En construccion</h1>
       ) : null}
-      {loading ? //   <svg // <div className="grid h-screen place-content-center">
-      //     aria-hidden="true"
-      //     className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-      //     viewBox="0 0 100 101"
+      {/* {loading ? //     viewBox="0 0 100 101" //     className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" //     aria-hidden="true" //   <svg // <div className="grid h-screen place-content-center">
       //     fill="none"
       //     xmlns="http://www.w3.org/2000/svg"
       //   >
@@ -134,7 +131,7 @@ const VsPlayer = () => {
             />
           </Modal>
         </div>
-      ) : null}
+      ) : null} */}
     </>
   );
 };
