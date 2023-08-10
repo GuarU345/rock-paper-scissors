@@ -6,40 +6,21 @@ import Results from "../components/Results.tsx";
 import { useEffect, useState } from "react";
 import { BsScissors } from "react-icons/bs";
 import { GiStoneBlock } from "react-icons/gi";
-import { OPTIONS_v2, WINNER_OPTIONS } from "../constants.tsx";
+import { OPTIONS, WINNER_OPTIONS } from "../constants.tsx";
 import { generateOptionOfCpu } from "../functions/random.ts";
 import { Link } from "react-router-dom";
-import { getOptions } from "../services/game.ts";
-import { GameOptions, OptionsV2 } from "../types";
+import { FaHandRock, FaHandScissors } from "react-icons/fa";
+import { LiaToiletPaperSolid } from "react-icons/lia";
 
 const Game = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [options, setOptions] = useState([]);
   const [text, setText] = useState("");
   const [userOption, setUserOption] = useState<JSX.Element | undefined>();
   const [cpuOption, setCpuOption] = useState<JSX.Element | undefined>();
 
   const closeModal = () => {
     setIsOpen(false);
-  };
-
-  const getGameOptions = async () => {
-    const resp = await getOptions();
-    const data = resp
-      .flatMap((r: GameOptions) =>
-        OPTIONS_v2.map((o: OptionsV2) => {
-          if (o.value !== r.value) return;
-          return {
-            name: r.name,
-            value: o.value,
-            element: o.element,
-            id: r.id,
-          };
-        })
-      )
-      .filter((r: any) => r !== undefined);
-    setOptions(data);
   };
 
   const game = (option: number, element: JSX.Element) => {
@@ -70,10 +51,6 @@ const Game = () => {
     setTimeout(() => {
       setLoading(false);
     }, 900);
-  }, []);
-
-  useEffect(() => {
-    getGameOptions();
   }, []);
 
   return (
@@ -111,20 +88,27 @@ const Game = () => {
           </h1>
           <main className="grid place-content-center h-[95%] pb-4 gap-y-2">
             <ul className="flex flex-col items-center pt-6 text-white gap-3 md:flex-row md:justify-center">
-              {options.map((option) => (
-                <Options
-                  action={() => game(option.value, option.element)}
-                  icon={option.element}
-                  key={option.id}
-                ></Options>
-              ))}
+              <Options
+                action={() => game(OPTIONS.rock.value, OPTIONS.rock.element)}
+                icon={<FaHandRock />}
+              />
+              <Options
+                action={() => game(OPTIONS.paper.value, OPTIONS.paper.element)}
+                icon={<LiaToiletPaperSolid />}
+              />
+              <Options
+                action={() =>
+                  game(OPTIONS.scissors.value, OPTIONS.scissors.element)
+                }
+                icon={<FaHandScissors />}
+              />
             </ul>
             <Link
               type="button"
-              to="/rooms"
+              to="/"
               className="text-white rounded-md text-center border-2 py-2 md:w-[32.75%] md:py-2 md:m-auto xl:w-[32.75%] xl:m-auto xl:py-4 hover:border-red-600"
             >
-              Back to rooms
+              Back to home
             </Link>
           </main>
         </>

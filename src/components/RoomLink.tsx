@@ -18,8 +18,7 @@ const RoomLink = ({ room }: Props) => {
 
   return (
     <Link
-      key={room.id}
-      to="/game"
+      to="/vs"
       className="flex font-bold items-center gap-2 rounded-t-md text-white w-full border-2 p-4 h-10 hover:border-sky-400 sm:w-1/2 md:w-1/2 xl:w-1/2 xl:p-6"
       onClick={() => playGame(room.id)}
     >

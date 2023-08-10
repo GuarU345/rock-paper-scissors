@@ -3,6 +3,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import Game from "./pages/Game";
 import Room from "./pages/Room";
+import VsPlayer from "./pages/VsPlayer";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/game" element={<Game />} />
+          <Route path="/vs" element={<VsPlayer />} />
           <Route path="/rooms" element={<Room />} />
         </Routes>
       </BrowserRouter>

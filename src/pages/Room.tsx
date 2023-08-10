@@ -46,7 +46,7 @@ const Room = () => {
       <section className="flex flex-col p-4 gap-2 h-5/6">
         <ul className="flex flex-col gap-2 h-5/6 overflow-y-auto sm:items-center md:items-center xl:items-center xl:text-lg">
           {rooms.map((room) => (
-            <RoomLink room={room}></RoomLink>
+            <RoomLink key={room.id} room={room}></RoomLink>
           ))}
         </ul>
         <div className="flex justify-end mt-auto h-[10%]">

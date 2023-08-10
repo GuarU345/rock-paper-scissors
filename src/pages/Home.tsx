@@ -44,10 +44,17 @@ const Home = () => {
       </h1>
       <Link
         type="button"
-        to="/rooms"
+        to="/game"
         className="border-2 p-2 text-base mt-4 rounded-md hover:border-sky-600"
       >
         PLAY GAME
+      </Link>
+      <Link
+        type="button"
+        to="/rooms"
+        className="border-2 p-2 text-base mt-4 rounded-md hover:border-sky-600"
+      >
+        ONLINE GAME
       </Link>
     </div>
   );
