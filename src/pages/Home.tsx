@@ -44,7 +44,7 @@ const Home = () => {
       </h1>
       <Link
         type="button"
-        to="/game"
+        to="/rooms"
         className="border-2 p-2 text-base mt-4 rounded-md hover:border-sky-600"
       >
         PLAY GAME

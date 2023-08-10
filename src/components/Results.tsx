@@ -1,14 +1,16 @@
 import { ReactNode } from "react";
 
 type Props = {
+  text: string;
   user: ReactNode;
   cpu: ReactNode;
   action: () => void;
 };
 
-const Results = ({ user, cpu, action }: Props) => {
+const Results = ({ text, user, cpu, action }: Props) => {
   return (
     <div className="flex flex-col text-white items-center gap-2">
+      <h1 className="text-xl text-white">{text}</h1>
       <section>
         <p className="text-center">You</p>
         <span className="text-6xl">{user}</span>

@@ -102,10 +102,10 @@ const Game = () => {
             </ul>
             <Link
               type="button"
-              to="/"
-              className="text-white text-center border-2 py-2 md:w-[32.75%] md:py-2 md:m-auto xl:w-[32.75%] xl:m-auto xl:py-4 hover:border-red-600"
+              to="/rooms"
+              className="text-white rounded-md text-center border-2 py-2 md:w-[32.75%] md:py-2 md:m-auto xl:w-[32.75%] xl:m-auto xl:py-4 hover:border-red-600"
             >
-              Back home
+              Back to rooms
             </Link>
           </main>
         </>
@@ -113,8 +113,13 @@ const Game = () => {
 
       {isOpen ? (
         <div>
-          <Modal text={text} handleClose={closeModal}>
-            <Results user={userOption} cpu={cpuOption} action={closeModal} />
+          <Modal handleClose={closeModal}>
+            <Results
+              text={text}
+              user={userOption}
+              cpu={cpuOption}
+              action={closeModal}
+            />
           </Modal>
         </div>
       ) : null}
