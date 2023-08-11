@@ -3,6 +3,7 @@ import { createRoom, getDisponibleRooms } from "../services/game";
 import { Room } from "../types";
 import Modal from "../components/Modal";
 import RoomLink from "../components/RoomLink";
+import { Link } from "react-router-dom";
 
 const Room = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -44,11 +45,19 @@ const Room = () => {
     <>
       <h1 className="text-white text-4xl text-center h-1/6">Rooms</h1>
       <section className="flex flex-col p-4 gap-2 h-5/6">
-        <ul className="flex flex-col gap-2 h-5/6 overflow-y-auto sm:items-center md:items-center xl:items-center xl:text-lg">
+        <ul className="flex flex-col gap-2 h-4/6 overflow-y-auto sm:items-center sm:h-3/6 md:items-center xl:items-center xl:text-lg">
           {rooms.map((room) => (
             <RoomLink key={room.id} room={room}></RoomLink>
           ))}
         </ul>
+        <div className="grid place-content-center">
+          <Link
+            className="text-white text-center border-2 p-2 hover:border-red-600"
+            to="/"
+          >
+            Back to home
+          </Link>
+        </div>
         <div className="flex justify-end mt-auto h-[10%]">
           <button
             onClick={() => setIsOpen(true)}

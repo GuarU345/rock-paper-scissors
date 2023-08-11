@@ -71,7 +71,7 @@ const VsPlayer = () => {
   return (
     <>
       {finalized === false ? (
-        <h1 className="text-white text-6xl text-center">Under Construction</h1>
+        <h1 className="text-white text-4xl text-center">Under Construction</h1>
       ) : null}
       {/* {loading ? //     viewBox="0 0 100 101" //     className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" //     aria-hidden="true" //   <svg // <div className="grid h-screen place-content-center">
       //     fill="none"
