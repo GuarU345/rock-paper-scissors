@@ -56,3 +56,10 @@ export interface finalOptions {
   element: ReactNode;
   id: string;
 }
+
+export interface SignupBody {
+  username: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
