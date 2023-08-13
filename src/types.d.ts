@@ -20,7 +20,7 @@ export interface Response<T = unknown> {
 }
 
 export interface GameBody {
-  id_room: string;
+  room_id: string;
   player1: string;
   player2?: string;
 }

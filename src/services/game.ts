@@ -11,7 +11,7 @@ const createRoom = async (body: string) => {
 };
 
 const newGame = async (body: GameBody) => {
-  const { data } = await axios.post<Game>(`${API_URL}/game/records`, body);
+  const { data } = await axios.post<Game>(`${API_URL}/games/records`, body);
   return data;
 };
 
