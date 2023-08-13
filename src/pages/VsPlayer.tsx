@@ -12,7 +12,7 @@ import Modal from "../components/Modal";
 import Results from "../components/Results";
 import io from "socket.io-client"
 
-const socket = io('http://localhost:1234')
+// const socket = io('http://localhost:1234')
 
 const VsPlayer = () => {
   const [isOpen, setIsOpen] = useState(false);

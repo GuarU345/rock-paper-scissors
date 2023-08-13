@@ -7,14 +7,14 @@ type Props = {
 };
 
 const RoomLink = ({ room }: Props) => {
-  return
   const playGame = async (id: string) => {
+    return
     const body = {
       player1: "fc374jdtwmclyn7",
       room_id: id,
     };
     await newGame(body);
-  };
+};
 
   return (
     <Link

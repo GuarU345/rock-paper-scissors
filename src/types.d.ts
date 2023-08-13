@@ -63,3 +63,8 @@ export interface SignupBody {
   password: string;
   passwordConfirm: string;
 }
+
+export interface SigninBody {
+  identity:string
+  password:string
+}
