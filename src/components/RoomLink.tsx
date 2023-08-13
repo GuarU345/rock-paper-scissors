@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { Room } from "../types";
-import { newGame } from "../services/game";
+import { GameBody, Room } from "../types";
+import { gameCreated, newGame, playerExisting, updateGame, updateRoom } from "../services/game";
+import { toast } from "sonner";
 
 type Props = {
   room: Room;
@@ -8,12 +9,37 @@ type Props = {
 
 const RoomLink = ({ room }: Props) => {
   const playGame = async (id: string) => {
+    const resp = await gameCreated(id)
+    let body
+    if (resp.playing === false){
+      body = {
+        player1: "hpzlur2ey4sqpz8",
+        room_id: id,
+      };
+    }
+    const resp2 = await playerExisting()
+    console.log(resp2)
+   
     return
-    const body = {
-      player1: "fc374jdtwmclyn7",
-      room_id: id,
-    };
-    await newGame(body);
+    // if(){
+    //   body = {
+    //     player2: "hlm8qrq4cfgn93r",
+    //     status:true
+    //   };
+    //   const room = {
+    //     playing:true
+    //   }
+    //  try {
+    //   await updateGame(resp.id,body as GameBody)
+    //   await updateRoom(id,room)
+    //   toast("play the game")
+    //  } catch (error) {
+    //   toast("Something Bad")
+    //  }
+    //  return
+    // }
+    // if(body === undefined) return
+    // await newGame(body as GameBody);
 };
 
   return (
