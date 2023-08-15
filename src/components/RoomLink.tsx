@@ -25,13 +25,14 @@ const RoomLink = ({ room }: Props) => {
       const updRoom = {
         playing: true,
       };
+      localStorage.setItem("player", body.player1);
       if (body === undefined) return;
       await newGame(body as GameBody);
       await updateRoom(id, updRoom);
     } else {
       const exists = await playerExisting();
-
-      if (exists.player1 !== "") {
+      const player = localStorage.getItem("player");
+      if (exists.player1 !== "" && exists.player1 != player) {
         body = {
           player2: "neq88cvlet2pa2w",
           status: true,
@@ -43,6 +44,8 @@ const RoomLink = ({ room }: Props) => {
         } catch (error) {
           toast("Something Bad");
         }
+      } else {
+        toast("user is in room");
       }
     }
   };
