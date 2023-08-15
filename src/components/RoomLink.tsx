@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 import { GameBody, Room } from "../types";
-import { gameCreated, newGame, playerExisting, updateGame, updateRoom } from "../services/game";
+import {
+  gameCreated,
+  newGame,
+  playerExisting,
+  updateGame,
+  updateRoom,
+} from "../services/game";
 import { toast } from "sonner";
 
 type Props = {
@@ -9,38 +15,37 @@ type Props = {
 
 const RoomLink = ({ room }: Props) => {
   const playGame = async (id: string) => {
-    const resp = await gameCreated(id)
-    let body
-    if (resp.playing === false){
+    const resp = await gameCreated(id);
+    let body;
+    if (resp.playing === false) {
       body = {
-        player1: "hpzlur2ey4sqpz8",
+        player1: "1ru61t6hjqbp97r",
         room_id: id,
       };
+      const updRoom = {
+        playing: true,
+      };
+      if (body === undefined) return;
+      await newGame(body as GameBody);
+      await updateRoom(id, updRoom);
+    } else {
+      const exists = await playerExisting();
+
+      if (exists.player1 !== "") {
+        body = {
+          player2: "neq88cvlet2pa2w",
+          status: true,
+        };
+
+        try {
+          await updateGame(exists.id, body as GameBody);
+          toast("play the game");
+        } catch (error) {
+          toast("Something Bad");
+        }
+      }
     }
-    const resp2 = await playerExisting()
-    console.log(resp2)
-   
-    return
-    // if(){
-    //   body = {
-    //     player2: "hlm8qrq4cfgn93r",
-    //     status:true
-    //   };
-    //   const room = {
-    //     playing:true
-    //   }
-    //  try {
-    //   await updateGame(resp.id,body as GameBody)
-    //   await updateRoom(id,room)
-    //   toast("play the game")
-    //  } catch (error) {
-    //   toast("Something Bad")
-    //  }
-    //  return
-    // }
-    // if(body === undefined) return
-    // await newGame(body as GameBody);
-};
+  };
 
   return (
     <Link

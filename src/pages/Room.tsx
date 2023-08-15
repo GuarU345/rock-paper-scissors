@@ -53,7 +53,7 @@ const Room = () => {
         <div className="grid place-content-center">
           <Link
             className="text-white text-center border-2 p-2 hover:border-red-600"
-            to="/"
+            to="/home"
           >
             Back to home
           </Link>
