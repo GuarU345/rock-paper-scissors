@@ -8,47 +8,93 @@ const API_URL = "http://localhost:8090/api/collections";
 const pb = new PocketBase("http://127.0.0.1:8090");
 
 const createRoom = async (body: string) => {
-  const { data } = await axios.post<Room>(`${API_URL}/rooms/records`, {
-    name: body,
-  });
-  return data;
+  try {
+    const { data } = await axios.post<Room>(`${API_URL}/rooms/records`, {
+      name: body,
+    });
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
 const updateRoom = async (id: string, room: any) => {
-  const { data } = await axios.patch(`${API_URL}/rooms/records/${id}`, room);
-  return data;
+  try {
+    const { data } = await axios.patch(`${API_URL}/rooms/records/${id}`, room);
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
 const newGame = async (body: GameBody) => {
-  const { data } = await axios.post<Game>(`${API_URL}/games/records`, body);
-  return data;
+  try {
+    const { data } = await axios.post<Game>(`${API_URL}/games/records`, body);
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
 const updateGame = async (id: string, body: GameBody) => {
-  const { data } = await axios.patch(`${API_URL}/games/records/${id}`, body);
-  return data;
+  try {
+    const { data } = await axios.patch(`${API_URL}/games/records/${id}`, body);
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
 const getDisponibleRooms = async () => {
-  const { data } = await axios.get<Response<Room>>(`${API_URL}/rooms/records`);
-  return data.items;
+  try {
+    const { data } = await axios.get<Response<Room>>(
+      `${API_URL}/rooms/records`
+    );
+    return data.items;
+  } catch (error) {
+    return error;
+  }
 };
 
 const getOptions = async () => {
-  const { data } = await axios.get(`${API_URL}/options/records`);
-  return data.items;
+  try {
+    const { data } = await axios.get(`${API_URL}/options/records`);
+    return data.items;
+  } catch (error) {
+    return error;
+  }
 };
 
 const gameCreated = async (id: string) => {
-  const { data } = await axios.get(`${API_URL}/rooms/records/${id}`);
-  return data;
+  try {
+    const { data } = await axios.get(`${API_URL}/rooms/records/${id}`);
+    console.log(data);
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
-const playerExisting = async () => {
-  const data = await pb.collection("games").getList(1, 1, {
-    expand: "Rooms",
-  });
-  return data.items[0];
+const playerExisting = async (id: string) => {
+  try {
+    const { data } = await axios.get(
+      `${API_URL}/games/records/?filter=(room_id="${id}")`
+    );
+    return data.items[0];
+  } catch (error) {
+    return error;
+  }
+};
+
+const gameReady = async (id: string) => {
+  try {
+    const { data } = await axios.get(
+      `${API_URL}/games/records/?filter=(room_id="${id}")`
+    );
+    return data.items[0];
+  } catch (error) {
+    return error;
+  }
 };
 
 export {
@@ -60,4 +106,5 @@ export {
   getOptions,
   gameCreated,
   playerExisting,
+  gameReady,
 };

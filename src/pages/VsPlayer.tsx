@@ -2,23 +2,27 @@
 import { useEffect, useState } from "react";
 import Options from "../components/Options";
 import { OPTIONS_v2 } from "../constants";
-import { getOptions } from "../services/game";
+import { gameReady, getOptions } from "../services/game";
 import { GameOptions, OptionsV2 } from "../types";
 import confetti from "canvas-confetti";
 import { BsScissors } from "react-icons/bs";
 import { GiStoneBlock } from "react-icons/gi";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Modal from "../components/Modal";
 import Results from "../components/Results";
-import io from "socket.io-client"
+import io from "socket.io-client";
+import { toast } from "sonner";
 
 // const socket = io('http://localhost:1234')
 
 const VsPlayer = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [options, setOptions] = useState([]);
-  const [gameStarted,setGameStarted] = useState(false)
-  const [result,setResult] = useState("")
+  const [gameStarted, setGameStarted] = useState(false);
+  const [result, setResult] = useState("");
+  const location = useLocation();
+  const game_id = location.state;
+
   // const [text, setText] = useState("");
   // const [cpuOption,setCpuOption] = useState<JSX.Element | undefined>()
   // const [userOption, setUserOption] = useState<JSX.Element | undefined>();
@@ -45,44 +49,54 @@ const VsPlayer = () => {
     setIsOpen(false);
   };
 
-  const playersInGame = () => {
-    
-  }
+  const gameStart = async () => {
+    if (game_id === null) return;
+    try {
+      const resp = await gameReady(game_id);
+      console.log("el resp que vale", resp);
+      if (resp.status === true && resp.player1 !== "") {
+        setGameStarted(true);
+      }
+    } catch (error) {
+      toast(`${error}`);
+    }
+  };
+
+  const playersInGame = () => {};
 
   const playing = () => {
-    socket.on('game_start', () => {
+    socket.on("game_start", () => {
       setGameStarted(true);
     });
 
-    socket.on('game_result', (gameResult: string) => {
+    socket.on("game_result", (gameResult: string) => {
       setResult(gameResult);
     });
 
     return () => {
       socket.disconnect();
     };
-  }
+  };
 
   const makeChoice = (choice: string) => {
-    socket.emit('choice', choice);
+    socket.emit("choice", choice);
   };
 
   useEffect(() => {
-    
+    getGameOptions();
   }, []);
 
   useEffect(() => {
-    getGameOptions()
-  },[])
-
-  useEffect(() => {
-    
+    gameStart();
   }, []);
 
   return (
     <>
-      {!gameStarted ?  <div className="flex flex-col gap-2 h-screen items-center justify-center">
-          <p className="text-white">Esperando a que ambos jugadores se conecten</p>
+      {!gameStarted ? (
+        <div className="flex flex-col gap-2 h-screen items-center justify-center">
+          <p className="text-white">
+            Esperando a que ambos jugadores se conecten
+          </p>
           <svg
             aria-hidden="true"
             className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -100,7 +114,8 @@ const VsPlayer = () => {
             />
           </svg>
           <span className="sr-only">Loading...</span>
-        </div> : (
+        </div>
+      ) : (
         <>
           <h1 className="text-2xl flex gap-2 justify-center font-bold text-center text-white xl:text-4xl h-[5%]">
             <span className="text-gray-400">
