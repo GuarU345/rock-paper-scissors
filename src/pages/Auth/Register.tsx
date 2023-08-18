@@ -3,6 +3,7 @@ import { signup } from "../../services/auth";
 import { SignupBody } from "../../types";
 import { toast } from "sonner";
 import AnimationText from "../../components/AnimationText";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const {
@@ -18,7 +19,7 @@ const Register = () => {
       toast("Register Successfully");
       reset();
     } catch (error) {
-      toast("Something Bad");
+      toast(`${error}`);
     }
   });
 
@@ -56,6 +57,9 @@ const Register = () => {
         )}
         <button className="text-white border-2">Add</button>
       </form>
+      <Link className="text-white text-center mt-2" to="/signin">
+        Back to login
+      </Link>
     </div>
   );
 };

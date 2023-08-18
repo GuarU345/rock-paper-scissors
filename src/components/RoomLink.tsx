@@ -15,6 +15,12 @@ type Props = {
   room: Room;
 };
 
+const user = localStorage.getItem("pocketbase_auth");
+let userInfo: any;
+if (user) {
+  userInfo = JSON.parse(user);
+}
+
 const RoomLink = ({ room }: Props) => {
   const navigate = useNavigate();
 
@@ -23,7 +29,7 @@ const RoomLink = ({ room }: Props) => {
     let body;
     if (resp.status === false) {
       body = {
-        player1: "xn8n0bsyo0p5vxw",
+        player1: userInfo.model.id,
         room_id: id,
       };
       const updRoom = {
@@ -40,10 +46,10 @@ const RoomLink = ({ room }: Props) => {
       toast("you are the player1");
     } else {
       const exists: any = await getGameByRoomId(id);
-      const player = localStorage.getItem("player");
+      const player = userInfo.model.id;
       if (exists.player1 !== "" && exists.player1 != player) {
         body = {
-          player2: "7kz4qa9i3rl3n6o",
+          player2: userInfo.model.id,
           status: true,
         };
         const updRoom = {

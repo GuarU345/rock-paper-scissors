@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { signin } from "../../services/auth";
 import { toast } from "sonner";
 import { SigninBody } from "../../types";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const {
@@ -13,19 +13,19 @@ const Login = () => {
     reset,
   } = useForm();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const onSubmit = handleSubmit(async(data) => {
+  const onSubmit = handleSubmit(async (data) => {
     try {
-      const token = await signin(data as SigninBody)
-      localStorage.setItem("token",token)
-      toast("Login Successfully")
-      reset()
-      navigate("/home")
+      const token = await signin(data as SigninBody);
+      localStorage.setItem("token", token);
+      toast("Login Successfully");
+      reset();
+      navigate("/home");
     } catch (error) {
-      toast("Something Bad")
+      toast(`${error}`);
     }
-  })
+  });
 
   return (
     <div className="grid h-screen place-content-center">
@@ -35,7 +35,7 @@ const Login = () => {
         <input
           className="outline-none rounded-md p-2"
           placeholder="ingresa tu email o username"
-          {...register("identity" , {required: "email requerido"})}
+          {...register("identity", { required: "email requerido" })}
         />
         <input
           className="outline-none rounded-md p-2"
@@ -47,9 +47,12 @@ const Login = () => {
           <span className="red">este campo es requerido</span>
         )}
         <button className="text-white border-2">Login</button>
+        <Link to="/signup" className="text-white text-center">
+          Dont have account? Signup!
+        </Link>
       </form>
     </div>
-  )
+  );
 };
 
 export default Login;
