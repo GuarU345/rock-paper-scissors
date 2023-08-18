@@ -2,14 +2,14 @@ import { ReactNode } from "react";
 import { IconBaseProps } from "react-icons";
 
 export interface Room {
-  id: string;
   collectionId: string;
   collectionName: string;
   created: string;
-  updated: string;
+  id: string;
   name: string;
+  players: number;
   status: boolean;
-  players: number
+  updated: string;
 }
 
 export interface Response<T = unknown> {
@@ -24,17 +24,21 @@ export interface GameBody {
   room_id?: string;
   player1: string;
   player2?: string;
-  status?:boolean
+  status?: boolean;
 }
 
 export interface Game {
-  id: string;
   collectionId: string;
   collectionName: string;
   created: string;
-  updated: string;
+  id: string;
   player1: string;
+  player1_option: string;
   player2: string;
+  player2_option: string;
+  room_id: string;
+  status: boolean;
+  updated: string;
 }
 
 export interface OptionsV2 {
@@ -67,6 +71,6 @@ export interface SignupBody {
 }
 
 export interface SigninBody {
-  identity:string
-  password:string
+  identity: string;
+  password: string;
 }
