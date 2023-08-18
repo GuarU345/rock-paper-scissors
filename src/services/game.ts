@@ -3,9 +3,9 @@ import axios from "axios";
 import PocketBase from "pocketbase";
 import { Room, Response, Game, GameBody } from "../types";
 
-const API_URL = "http://localhost:8090/api/collections";
+const API_URL = "https://rps-db.pockethost.io/api/collections";
 
-const pb = new PocketBase("http://127.0.0.1:8090");
+const pb = new PocketBase("https://rps-db.pockethost.io");
 
 const createRoom = async (body: string) => {
   try {
@@ -50,7 +50,7 @@ const getDisponibleRooms = async () => {
     const { data } = await axios.get<Response<Room>>(
       `${API_URL}/rooms/records`
     );
-    return data.items;
+    return data.items.filter(r => r.players < 2);
   } catch (error) {
     return error;
   }
@@ -68,14 +68,13 @@ const getOptions = async () => {
 const gameCreated = async (id: string) => {
   try {
     const { data } = await axios.get(`${API_URL}/rooms/records/${id}`);
-    console.log(data);
     return data;
   } catch (error) {
     return error;
   }
 };
 
-const playerExisting = async (id: string) => {
+const getGameByRoomId = async(id:string) => {
   try {
     const { data } = await axios.get(
       `${API_URL}/games/records/?filter=(room_id="${id}")`
@@ -84,18 +83,7 @@ const playerExisting = async (id: string) => {
   } catch (error) {
     return error;
   }
-};
-
-const gameReady = async (id: string) => {
-  try {
-    const { data } = await axios.get(
-      `${API_URL}/games/records/?filter=(room_id="${id}")`
-    );
-    return data.items[0];
-  } catch (error) {
-    return error;
-  }
-};
+}
 
 export {
   createRoom,
@@ -105,6 +93,5 @@ export {
   updateGame,
   getOptions,
   gameCreated,
-  playerExisting,
-  gameReady,
+  getGameByRoomId
 };

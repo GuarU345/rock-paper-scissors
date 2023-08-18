@@ -8,7 +8,8 @@ export interface Room {
   created: string;
   updated: string;
   name: string;
-  playing: boolean;
+  status: boolean;
+  players: number
 }
 
 export interface Response<T = unknown> {
