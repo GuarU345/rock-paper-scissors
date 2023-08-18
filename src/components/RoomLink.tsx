@@ -9,23 +9,15 @@ import {
   updateRoom,
 } from "../services/game";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
+import PlayersInGame from "./PlayersInGame";
 
 type Props = {
   room: Room;
 };
 
 const RoomLink = ({ room }: Props) => {
-  const navigate = useNavigate()
-  const [players,setPlayers] = useState(0)
-  
-  const countPlayersOnRoom = async() => {
-    if(room.players > 0){
-      const resp = await gameCreated(room.id)
-      setPlayers(resp.players)
-    }
-  }
-  
+  const navigate = useNavigate();
+
   const playGame = async (id: string) => {
     const resp = await gameCreated(id);
     let body;
@@ -40,12 +32,12 @@ const RoomLink = ({ room }: Props) => {
       };
       if (body === undefined) return;
       try {
-        await Promise.all([newGame(body as GameBody),updateRoom(id, updRoom)])
+        await Promise.all([newGame(body as GameBody), updateRoom(id, updRoom)]);
       } catch (error) {
-        toast(`${error}`)
+        toast(`${error}`);
       }
-      navigate("/vs",{state:null})
-      toast("you are the player1")
+      navigate("/vs", { state: null });
+      toast("you are the player1");
     } else {
       const exists: any = await getGameByRoomId(id);
       const player = localStorage.getItem("player");
@@ -58,12 +50,14 @@ const RoomLink = ({ room }: Props) => {
           players: 2,
         };
         try {
-          Promise.all([updateGame(exists.id, body as GameBody),
-          updateRoom(id, updRoom)])
+          Promise.all([
+            updateGame(exists.id, body as GameBody),
+            updateRoom(id, updRoom),
+          ]);
         } catch (error) {
           toast("Something Bad");
         }
-        navigate("/vs",{state:room.id})
+        navigate("/vs", { state: room.id });
         toast("play the game");
       } else {
         toast("user is in room");
@@ -71,20 +65,15 @@ const RoomLink = ({ room }: Props) => {
     }
   };
 
-  useEffect(() => {
-    countPlayersOnRoom()
-  },[])
-
   return (
     <>
-     <a
-      className="flex font-bold items-center gap-2 rounded-t-md text-white w-full border-2 p-4 h-10 hover:border-sky-400 sm:w-1/2 md:w-1/2 xl:w-1/2 xl:p-6"
-      onClick={async() =>  await playGame(room.id)}
-    >
-      {room.name}
-      <p className="text-white ml-auto text-sm">players {players === 0 ? '0/2' : `${players}/2`}</p>
-    </a>
-   
+      <a
+        className="flex font-bold items-center gap-2 rounded-t-md text-white w-full border-2 p-4 h-10 hover:border-sky-400 sm:w-1/2 md:w-1/2 xl:w-1/2 xl:p-6"
+        onClick={async () => await playGame(room.id)}
+      >
+        {room.name}
+        <PlayersInGame players={room.players} room={room.id} />
+      </a>
     </>
   );
 };
