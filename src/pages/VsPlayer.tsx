@@ -13,7 +13,12 @@ import Results from "../components/Results";
 import io from "socket.io-client";
 import { toast } from "sonner";
 
-const socket = io("http://192.168.1.30:1234");
+const socket = io("http://192.168.1.30:4000", {
+  transports: ["websocket", "polling"],
+  reconnection: true,
+  reconnectionAttempts: 3,
+  reconnectionDelay: 5000,
+});
 
 const VsPlayer = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,6 +27,10 @@ const VsPlayer = () => {
   const [result, setResult] = useState("");
   const location = useLocation();
   const game_id = location.state;
+
+  socket.io.on("error", (error) => {
+    console.log(error);
+  });
 
   // const [text, setText] = useState("");
   // const [cpuOption,setCpuOption] = useState<JSX.Element | undefined>()
@@ -83,9 +92,7 @@ const VsPlayer = () => {
     getGameOptions();
   }, []);
 
-  useEffect(() => {
-    gameStart();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <>
