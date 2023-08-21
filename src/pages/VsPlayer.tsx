@@ -2,28 +2,27 @@
 import { useEffect, useState } from "react";
 import Options from "../components/Options";
 import { OPTIONS_v2 } from "../constants";
-import { gameReady, getGameByRoomId, getOptions } from "../services/game";
-import { GameOptions, OptionsV2 } from "../types";
+import { getGameByRoomId, getOptions } from "../services/game";
+import { GameOptions, OptionsV2, finalOptions } from "../types";
 import confetti from "canvas-confetti";
 import { BsScissors } from "react-icons/bs";
 import { GiStoneBlock } from "react-icons/gi";
-import { Link,useLocation} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Modal from "../components/Modal";
 import Results from "../components/Results";
 import io from "socket.io-client";
 import { toast } from "sonner";
 
-
+const socket = io("http://192.168.1.30:1234");
 
 const VsPlayer = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState<finalOptions[]>([]);
   const [gameStarted, setGameStarted] = useState(false);
   const [result, setResult] = useState("");
-  const location = useLocation()
-  const game_id = location.state
-  
-  // const socket = io('http://192.168.1.7:1234')
+  const location = useLocation();
+  const game_id = location.state;
+
   // const [text, setText] = useState("");
   // const [cpuOption,setCpuOption] = useState<JSX.Element | undefined>()
   // const [userOption, setUserOption] = useState<JSX.Element | undefined>();
@@ -50,18 +49,18 @@ const VsPlayer = () => {
     setIsOpen(false);
   };
 
-   const gameStart = async () => {
+  const gameStart = async () => {
     if (game_id === null) return;
     try {
       const resp = await getGameByRoomId(game_id);
       if (resp.status === true && resp.player1 !== "") {
-        setGameStarted(true)
+        playing();
       }
     } catch (error) {
       toast(`${error}`);
     }
   };
-  /*
+
   const playing = () => {
     socket.on("game_start", () => {
       setGameStarted(true);
@@ -78,7 +77,7 @@ const VsPlayer = () => {
 
   const makeChoice = (choice: string) => {
     socket.emit("choice", choice);
-  }; */
+  };
 
   useEffect(() => {
     getGameOptions();

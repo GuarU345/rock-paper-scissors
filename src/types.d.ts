@@ -74,3 +74,9 @@ export interface SigninBody {
   identity: string;
   password: string;
 }
+
+export interface UserId {
+  model: {
+    id: string;
+  };
+}

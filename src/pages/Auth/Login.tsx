@@ -1,9 +1,7 @@
 import AnimationText from "../../components/AnimationText";
 import { useForm } from "react-hook-form";
-import { signin } from "../../services/auth";
-import { toast } from "sonner";
-import { SigninBody } from "../../types";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Login = () => {
   const {
@@ -13,18 +11,10 @@ const Login = () => {
     reset,
   } = useForm();
 
-  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const onSubmit = handleSubmit(async (data) => {
-    try {
-      const token = await signin(data as SigninBody);
-      localStorage.setItem("token", token);
-      toast("Login Successfully");
-      reset();
-      navigate("/home");
-    } catch (error) {
-      toast(`${error}`);
-    }
+    login(data, reset);
   });
 
   return (

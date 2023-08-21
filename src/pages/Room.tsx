@@ -12,7 +12,7 @@ const Room = () => {
 
   const getRooms = async () => {
     const resp = await getDisponibleRooms();
-    setRooms(resp);
+    setRooms(resp as Room[]);
   };
 
   const createNewRoom = async () => {

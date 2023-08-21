@@ -7,19 +7,49 @@ import Room from "./pages/Room";
 import VsPlayer from "./pages/VsPlayer";
 import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
+import AuthProvider from "./contexts/AuthContext";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/signin"/>} />
-          <Route path="/home" element={<Home/>}/>
+          <Route path="/" element={<Navigate to="/signin" />} />
+          <Route
+            path="/home"
+            element={
+              <AuthProvider>
+                <Home />
+              </AuthProvider>
+            }
+          />
+          <Route
+            path="/vs"
+            element={
+              <AuthProvider>
+                <VsPlayer />
+              </AuthProvider>
+            }
+          />
+          <Route
+            path="/rooms"
+            element={
+              <AuthProvider>
+                <Room />
+              </AuthProvider>
+            }
+          />
+
           <Route path="/game" element={<Game />} />
-          <Route path="/vs" element={<VsPlayer />} />
-          <Route path="/rooms" element={<Room />} />
           <Route path="/signup" element={<Register />} />
-          <Route path="/signin" element={<Login/>}/>
+          <Route
+            path="/signin"
+            element={
+              <AuthProvider>
+                <Login />
+              </AuthProvider>
+            }
+          />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-right" />
