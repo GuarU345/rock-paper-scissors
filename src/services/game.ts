@@ -1,11 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
-import PocketBase from "pocketbase";
 import { Room, Response, Game, GameBody } from "../types";
 
 const API_URL = "https://rps-db.pockethost.io/api/collections";
-
-const pb = new PocketBase("https://rps-db.pockethost.io");
 
 const createRoom = async (body: string) => {
   try {
@@ -50,7 +47,7 @@ const getDisponibleRooms = async () => {
     const { data } = await axios.get<Response<Room>>(
       `${API_URL}/rooms/records`
     );
-    return data.items.filter(r => r.players < 2);
+    return data.items.filter((r) => r.players < 2);
   } catch (error) {
     return error;
   }
@@ -74,7 +71,7 @@ const gameCreated = async (id: string) => {
   }
 };
 
-const getGameByRoomId = async(id:string) => {
+const getGameByRoomId = async (id: string) => {
   try {
     const { data } = await axios.get(
       `${API_URL}/games/records/?filter=(room_id="${id}")`
@@ -83,7 +80,7 @@ const getGameByRoomId = async(id:string) => {
   } catch (error) {
     return error;
   }
-}
+};
 
 export {
   createRoom,
@@ -93,5 +90,5 @@ export {
   updateGame,
   getOptions,
   gameCreated,
-  getGameByRoomId
+  getGameByRoomId,
 };

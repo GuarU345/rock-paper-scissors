@@ -10,26 +10,23 @@ import {
 } from "../services/game";
 import { toast } from "sonner";
 import PlayersInGame from "./PlayersInGame";
+import { useAuth } from "../contexts/AuthContext";
 
 type Props = {
   room: Room;
 };
 
-const user = localStorage.getItem("pocketbase_auth");
-let userInfo: any;
-if (user) {
-  userInfo = JSON.parse(user);
-}
-
 const RoomLink = ({ room }: Props) => {
   const navigate = useNavigate();
+  const { getUserInfo } = useAuth();
+  const userInfo = getUserInfo();
 
   const playGame = async (id: string) => {
     const resp = await gameCreated(id);
     let body;
     if (resp.status === false) {
       body = {
-        player1: userInfo.model.id,
+        player1: userInfo?.model.id,
         room_id: id,
       };
       const updRoom = {
@@ -46,10 +43,10 @@ const RoomLink = ({ room }: Props) => {
       toast("you are the player1");
     } else {
       const exists: any = await getGameByRoomId(id);
-      const player = userInfo.model.id;
+      const player = userInfo?.model.id;
       if (exists.player1 !== "" && exists.player1 != player) {
         body = {
-          player2: userInfo.model.id,
+          player2: userInfo?.model.id,
           status: true,
         };
         const updRoom = {
@@ -66,7 +63,7 @@ const RoomLink = ({ room }: Props) => {
         navigate("/vs", { state: room.id });
         toast("play the game");
       } else {
-        toast("user is in room");
+        toast("user in room");
       }
     }
   };
