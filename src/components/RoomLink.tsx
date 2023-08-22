@@ -44,6 +44,8 @@ const RoomLink = ({ room }: Props) => {
     } else {
       const exists: any = await getGameByRoomId(id);
       const player = userInfo?.model.id;
+      console.log(exists.player1);
+      console.log(player);
       if (exists.player1 !== "" && exists.player1 != player) {
         body = {
           player2: userInfo?.model.id,

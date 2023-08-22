@@ -76,6 +76,7 @@ const getGameByRoomId = async (id: string) => {
     const { data } = await axios.get(
       `${API_URL}/games/records/?filter=(room_id="${id}")`
     );
+    console.log(data);
     return data.items[0];
   } catch (error) {
     return error;
