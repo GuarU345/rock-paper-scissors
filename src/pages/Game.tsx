@@ -77,14 +77,14 @@ const Game = () => {
         </div>
       ) : (
         <>
-          <h1 className="text-2xl flex gap-2 justify-center font-bold text-center text-white xl:text-4xl h-[5%]">
-            <span className="text-gray-400">
+          <h1 className="gap-2 flex justify-center font-bold text-center text-white xl:text-4xl xl:gap-2 h-[5%]">
+            <p className="text-gray-400">
               <GiStoneBlock />
-            </span>
+            </p>
             Rock Paper Scissors
-            <span className="text-red-600">
+            <p className="text-red-600">
               <BsScissors />
-            </span>
+            </p>
           </h1>
           <main className="grid place-content-center h-[95%] pb-4 gap-y-2">
             <ul className="flex flex-col items-center pt-6 text-white gap-3 md:flex-row md:justify-center">
@@ -103,13 +103,15 @@ const Game = () => {
                 icon={<FaHandScissors />}
               />
             </ul>
-            <Link
-              type="button"
-              to="/home"
-              className="text-white rounded-md text-center border-2 py-2 md:w-[32.75%] md:py-2 md:m-auto xl:w-[32.75%] xl:m-auto xl:py-4 hover:border-red-600"
-            >
-              Back to home
-            </Link>
+            <div className="flex justify-center">
+              <Link
+                type="button"
+                to="/home"
+                className="nes-btn md:w-[32.75%] md:py-2 md:m-auto xl:w-[32.75%] xl:m-auto xl:py-4 is-error"
+              >
+                Back to home
+              </Link>
+            </div>
           </main>
         </>
       )}

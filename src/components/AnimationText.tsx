@@ -19,10 +19,10 @@ const AnimationText = () => {
 
   return (
     <div
-      className="grid place-content-center text-center text-white text-6xl"
+      className="grid place-content-center text-center text-white text-4xl"
       ref={elementRef}
     >
-      <h1 className="font-bold flex justify-center mb-4 opacity-0 transition-opacity duration-1000 delay-900 ease-in animate-appear xl:text-8xl">
+      <h1 className="font-bold flex xl:gap-2 justify-center mb-4 opacity-0 transition-opacity duration-1000 delay-900 ease-in animate-appear xl:text-8xl">
         <span className="text-gray-400">
           <GiStoneBlock />
         </span>

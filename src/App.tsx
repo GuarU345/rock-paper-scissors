@@ -8,6 +8,8 @@ import VsPlayer from "./pages/VsPlayer";
 import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
 import AuthProvider from "./contexts/AuthContext";
+import { useEffect } from "react";
+import { io } from "socket.io-client";
 
 function App() {
   return (

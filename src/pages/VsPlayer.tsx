@@ -21,13 +21,6 @@ const VsPlayer = () => {
   const location = useLocation();
   const game_id = location.state;
 
-  const socket = io("http://localhost:4000/", {
-    transports: ["websocket", "polling"],
-    reconnection: true,
-    reconnectionAttempts: 3,
-    reconnectionDelay: 5000,
-  });
-
   // const [text, setText] = useState("");
   // const [cpuOption,setCpuOption] = useState<JSX.Element | undefined>()
   // const [userOption, setUserOption] = useState<JSX.Element | undefined>();
@@ -59,30 +52,31 @@ const VsPlayer = () => {
     try {
       const resp = await getGameByRoomId(game_id);
       if (resp.status === true && resp.player1 !== "") {
-        playing();
+        setGameStarted(true);
+        // playing();
       }
     } catch (error) {
       toast(`${error}`);
     }
   };
 
-  const playing = () => {
-    socket.on("game_start", () => {
-      setGameStarted(true);
-    });
+  // const playing = () => {
+  //   socket.on("game_start", () => {
+  //     setGameStarted(true);
+  //   });
 
-    socket.on("game_result", (gameResult: string) => {
-      setResult(gameResult);
-    });
+  //   socket.on("game_result", (gameResult: string) => {
+  //     setResult(gameResult);
+  //   });
 
-    return () => {
-      socket.disconnect();
-    };
-  };
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // };
 
-  const makeChoice = (choice: string) => {
-    socket.emit("choice", choice);
-  };
+  // const makeChoice = (choice: string) => {
+  //   socket.emit("choice", choice);
+  // };
 
   useEffect(() => {
     getGameOptions();
@@ -95,7 +89,7 @@ const VsPlayer = () => {
   return (
     <>
       {!gameStarted ? (
-        <div className="flex flex-col gap-2 h-screen items-center justify-center">
+        <div className="flex flex-col gap-2 h-screen text-center justify-center items-center">
           <p className="text-white">
             Esperando a que ambos jugadores se conecten
           </p>
