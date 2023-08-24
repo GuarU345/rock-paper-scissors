@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "sonner";
 import { SigninBody, UserId } from "../types";
+import { socket } from "../socket/socket";
 
 interface AuthContextType {
   login: (data: SigninBody, reset: () => void) => Promise<void>;
@@ -40,8 +41,9 @@ const AuthProvider: React.FC<MyContextProps> = ({ children }) => {
     try {
       const response = await signin(data);
       localStorage.setItem("token", response);
-      toast.success("Login Successfully");
       navigate("/home");
+      socket.connect();
+      toast.success("Login Successfully");
       reset();
     } catch (error) {
       toast.error(`${error}`);
