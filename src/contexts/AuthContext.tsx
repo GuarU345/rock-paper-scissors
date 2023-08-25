@@ -1,68 +1,42 @@
-import { ReactElement, ReactNode, createContext, useContext } from "react";
-import { signin } from "../services/auth";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { create } from "zustand";
 import { toast } from "sonner";
-import { SigninBody, UserId } from "../types";
+import { signin } from "../services/auth";
 import { socket } from "../socket/socket";
+import { SigninBody, UserId } from "../types";
+import { useNavigate } from "react-router-dom";
 
-interface AuthContextType {
+interface AuthStore {
+  token: string | null;
+  userInfo: UserId | null;
   login: (data: SigninBody, reset: () => void) => Promise<void>;
   getToken: () => string | null;
-  token: string | null;
   getUserInfo: () => UserId | null;
 }
 
-type MyContextProps = {
-  children: ReactNode | ReactElement[];
-};
+const useAuthStore = create<AuthStore>((set) => ({
+  token: localStorage.getItem("token") || null,
+  userInfo: JSON.parse(localStorage.getItem("pocketbase_auth")) || null,
 
-const AuthContext = createContext<AuthContextType | null>(null);
-
-const useAuth = () => {
-  const authContext = useContext(AuthContext);
-  if (!authContext) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return authContext;
-};
-
-const AuthProvider: React.FC<MyContextProps> = ({ children }) => {
-  const [token] = useState<string | null>(localStorage.getItem("token"));
-  const [userInfo] = useState(() => {
-    const auth = localStorage.getItem("pocketbase_auth");
-    if (auth === null) return {};
-    return JSON.parse(auth);
-  });
-
-  const navigate = useNavigate();
-
-  const login = async (data: SigninBody, reset: () => void) => {
+  login: async (data: SigninBody, reset: () => void) => {
     try {
       const response = await signin(data);
       localStorage.setItem("token", response);
-      navigate("/home");
+      set({ token: response });
       socket.connect();
       toast.success("Login Successfully");
       reset();
     } catch (error) {
       toast.error(`${error}`);
     }
-  };
+  },
 
-  const getToken = () => {
-    return token;
-  };
+  getToken: () => {
+    return localStorage.getItem("token") || null;
+  },
 
-  const getUserInfo = () => {
-    return userInfo;
-  };
+  getUserInfo: () => {
+    return JSON.parse(localStorage.getItem("pocketbase_auth")) || null;
+  },
+}));
 
-  return (
-    <AuthContext.Provider value={{ login, getToken, token, getUserInfo }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-export { AuthProvider, AuthContext, useAuth };
-export default AuthProvider;
+export default useAuthStore;

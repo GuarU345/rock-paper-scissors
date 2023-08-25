@@ -1,7 +1,7 @@
 import AnimationText from "../../components/AnimationText";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
+import useAuthStore from "../../contexts/AuthContext";
 
 const Login = () => {
   const {
@@ -11,10 +11,13 @@ const Login = () => {
     reset,
   } = useForm();
 
-  const { login } = useAuth();
+  const { login } = useAuthStore();
+
+  const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (data) => {
     login(data, reset);
+    navigate("/home");
   });
 
   return (

@@ -10,15 +10,17 @@ import {
 } from "../services/game";
 import { toast } from "sonner";
 import PlayersInGame from "./PlayersInGame";
-import { useAuth } from "../contexts/AuthContext";
+import useAuthStore from "../contexts/AuthContext";
+import { socket } from "../socket/socket";
 
 type Props = {
   room: Room;
+  updateRooms: () => Promise<void>;
 };
 
-const RoomLink = ({ room }: Props) => {
+const RoomLink = ({ room, updateRooms }: Props) => {
   const navigate = useNavigate();
-  const { getUserInfo } = useAuth();
+  const { getUserInfo } = useAuthStore();
   const userInfo = getUserInfo();
 
   const playGame = async (id: string) => {
@@ -35,7 +37,12 @@ const RoomLink = ({ room }: Props) => {
       };
       if (body === undefined) return;
       try {
-        await Promise.all([newGame(body as GameBody), updateRoom(id, updRoom)]);
+        await newGame(body as GameBody);
+        await updateRoom(id, updRoom);
+        socket.emit("playerGoToRoom");
+        socket.on("playerInRoom", () => {
+          updateRooms();
+        });
       } catch (error) {
         toast(`${error}`);
       }
@@ -44,8 +51,6 @@ const RoomLink = ({ room }: Props) => {
     } else {
       const exists: any = await getGameByRoomId(id);
       const player = userInfo?.model.id;
-      console.log(exists.player1);
-      console.log(player);
       if (exists.player1 !== "" && exists.player1 != player) {
         body = {
           player2: userInfo?.model.id,

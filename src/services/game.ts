@@ -16,12 +16,8 @@ const createRoom = async (body: string) => {
 };
 
 const updateRoom = async (id: string, room: any) => {
-  try {
-    const { data } = await axios.patch(`${API_URL}/rooms/records/${id}`, room);
-    return data;
-  } catch (error) {
-    return error;
-  }
+  const { data } = await axios.patch(`${API_URL}/rooms/records/${id}`, room);
+  return data;
 };
 
 const newGame = async (body: GameBody) => {

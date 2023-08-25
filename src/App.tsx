@@ -7,9 +7,7 @@ import Room from "./pages/Room";
 import VsPlayer from "./pages/VsPlayer";
 import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
-import AuthProvider from "./contexts/AuthContext";
-import { useEffect } from "react";
-import { io } from "socket.io-client";
+import useAuthStore from "./contexts/AuthContext";
 
 function App() {
   return (
@@ -17,41 +15,12 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/signin" />} />
-          <Route
-            path="/home"
-            element={
-              <AuthProvider>
-                <Home />
-              </AuthProvider>
-            }
-          />
-          <Route
-            path="/vs"
-            element={
-              <AuthProvider>
-                <VsPlayer />
-              </AuthProvider>
-            }
-          />
-          <Route
-            path="/rooms"
-            element={
-              <AuthProvider>
-                <Room />
-              </AuthProvider>
-            }
-          />
-
+          <Route path="/home" element={<Home />} />
+          <Route path="/vs" element={<VsPlayer />} />
+          <Route path="/rooms" element={<Room />} />
           <Route path="/game" element={<Game />} />
           <Route path="/signup" element={<Register />} />
-          <Route
-            path="/signin"
-            element={
-              <AuthProvider>
-                <Login />
-              </AuthProvider>
-            }
-          />
+          <Route path="/signin" element={<Login />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-right" />

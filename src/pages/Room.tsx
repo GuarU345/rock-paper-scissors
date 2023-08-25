@@ -5,11 +5,15 @@ import Modal from "../components/Modal";
 import RoomLink from "../components/RoomLink";
 import { Link } from "react-router-dom";
 import { socket } from "../socket/socket";
+import useAuthStore from "../contexts/AuthContext";
+import { toast } from "sonner";
 
 const Room = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const name = useRef<HTMLInputElement>(null);
+  const { getToken } = useAuthStore();
+  const token = getToken();
 
   const getRooms = async () => {
     const resp = await getDisponibleRooms();
@@ -21,12 +25,12 @@ const Room = () => {
     if (body === undefined) return;
     try {
       await createRoom(body || "");
-      if (socket.connected) {
-        socket.emit("newRoomCreated", { roomName: body });
-        name.current!.value = "";
-        socket.on("roomDataUpdated", async () => await getRooms());
-        closeModal();
-      }
+      socket.emit("newRoomCreated");
+      name.current!.value = "";
+      socket.on("roomDataUpdated", async () => {
+        await getRooms();
+      });
+      closeModal();
     } catch (error) {
       console.error(error);
     }
@@ -45,13 +49,23 @@ const Room = () => {
     getRooms();
   }, []);
 
+  useEffect(() => {
+    if (token) {
+      socket.connect();
+    }
+  });
+
   return (
     <>
       <h1 className="text-white text-4xl text-center h-1/6">Rooms</h1>
       <section className="flex flex-col p-4 gap-2 h-5/6">
         <ul className="flex text-white flex-col gap-2 h-4/6 overflow-y-auto sm:items-center sm:h-3/6 md:items-center xl:items-center xl:text-lg">
           {rooms.map((room) => (
-            <RoomLink key={room.id} room={room}></RoomLink>
+            <RoomLink
+              key={room.id}
+              room={room}
+              updateRooms={getRooms}
+            ></RoomLink>
           ))}
         </ul>
         <div className="grid place-content-center">
