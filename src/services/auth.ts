@@ -6,7 +6,7 @@ const pb = new PocketBase("https://rps-db.pockethost.io");
 
 const signup = async (body: SignupBody) => {
   try {
-    const { data } = await await pb.collection("users").create(body);
+    const { data } = await pb.collection("users").create(body);
     return data;
   } catch (error: any) {
     if (error.response.data.email) {

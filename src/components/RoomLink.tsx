@@ -40,9 +40,6 @@ const RoomLink = ({ room, updateRooms }: Props) => {
         await newGame(body as GameBody);
         await updateRoom(id, updRoom);
         socket.emit("playerGoToRoom");
-        socket.on("playerInRoom", () => {
-          updateRooms();
-        });
       } catch (error) {
         toast(`${error}`);
       }

@@ -28,6 +28,7 @@ const Room = () => {
       socket.emit("newRoomCreated");
       name.current!.value = "";
       socket.on("roomDataUpdated", async () => {
+        console.log("si llego aqui we");
         await getRooms();
       });
       closeModal();
@@ -47,6 +48,10 @@ const Room = () => {
 
   useEffect(() => {
     getRooms();
+
+    socket.on("roomDataUpdated", async () => {
+      await getRooms();
+    });
   }, []);
 
   useEffect(() => {

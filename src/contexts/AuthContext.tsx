@@ -3,7 +3,6 @@ import { toast } from "sonner";
 import { signin } from "../services/auth";
 import { socket } from "../socket/socket";
 import { SigninBody, UserId } from "../types";
-import { useNavigate } from "react-router-dom";
 
 interface AuthStore {
   token: string | null;

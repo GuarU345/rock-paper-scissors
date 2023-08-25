@@ -12,6 +12,7 @@ import Modal from "../components/Modal";
 import Results from "../components/Results";
 import io from "socket.io-client";
 import { toast } from "sonner";
+import { socket } from "../socket/socket";
 
 const VsPlayer = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,34 +53,27 @@ const VsPlayer = () => {
     try {
       const resp = await getGameByRoomId(game_id);
       if (resp.status === true && resp.player1 !== "") {
-        setGameStarted(true);
-        // playing();
+        console.log("entre");
+        socket.emit("game_ready");
       }
     } catch (error) {
       toast(`${error}`);
     }
   };
 
-  // const playing = () => {
-  //   socket.on("game_start", () => {
-  //     setGameStarted(true);
-  //   });
-
-  //   socket.on("game_result", (gameResult: string) => {
-  //     setResult(gameResult);
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // };
-
-  // const makeChoice = (choice: string) => {
-  //   socket.emit("choice", choice);
-  // };
+  const makeChoice = (choice: string) => {
+    socket.emit("choice", choice);
+  };
 
   useEffect(() => {
     getGameOptions();
+    socket.on("game_start", () => {
+      setGameStarted(true);
+    });
+
+    socket.on("game_result", (gameResult: string) => {
+      setResult(gameResult);
+    });
   }, []);
 
   useEffect(() => {
