@@ -24,9 +24,9 @@ const PlayersInGame = ({ players, room }: Props) => {
   }, []);
 
   return (
-    <p className="text-white ml-auto text-sm">
-      players {countPlayers === 0 ? "0/2" : `${countPlayers}/2`}
-    </p>
+    <div className="flex justify-end">
+      <p>players {countPlayers === 0 ? "0/2" : `${countPlayers}/2`}</p>
+    </div>
   );
 };
 

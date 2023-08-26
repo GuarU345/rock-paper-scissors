@@ -29,6 +29,11 @@ const useAuthStore = create<AuthStore>((set) => ({
     }
   },
 
+  logout: async () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("pocketbase_auth");
+  },
+
   getToken: () => {
     return localStorage.getItem("token") || null;
   },

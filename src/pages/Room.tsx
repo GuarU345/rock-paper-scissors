@@ -63,8 +63,13 @@ const Room = () => {
   return (
     <>
       <h1 className="text-white text-4xl text-center h-1/6">Rooms</h1>
+      <div className="flex justify-center mt-auto">
+        <button onClick={() => setIsOpen(true)} className="nes-btn text-sm">
+          Create a new room
+        </button>
+      </div>
       <section className="flex flex-col p-4 gap-2 h-5/6">
-        <ul className="flex text-white flex-col gap-2 h-4/6 overflow-y-auto sm:items-center sm:h-3/6 md:items-center xl:items-center xl:text-lg">
+        <ul className="flex flex-col gap-2 rounded-md text-white">
           {rooms.map((room) => (
             <RoomLink
               key={room.id}
@@ -81,18 +86,13 @@ const Room = () => {
             Back to home
           </Link>
         </div>
-        <div className="flex justify-end mt-auto h-[10%]">
-          <button
-            onClick={() => setIsOpen(true)}
-            className="nes-btn border-2 text-white p-3 rounded-md hover:border-sky-400"
-          >
-            Create a new room
-          </button>
-        </div>
       </section>
       {isOpen ? (
         <Modal handleClose={closeModal}>
           <form className="flex flex-col gap-2 p-2">
+            <div className="flex justify-end text-red-600" onClick={closeModal}>
+              X
+            </div>
             <h1 className="text-white text-center">Create new room</h1>
             <input
               placeholder="name of room"
@@ -100,10 +100,7 @@ const Room = () => {
               className="w-full p-2"
               ref={name}
             />
-            <button
-              onClick={handleClick}
-              className="nes-btn text-white p-2 border-2 rounded-md"
-            >
+            <button onClick={handleClick} className="nes-btn text-white p-2">
               Add
             </button>
           </form>

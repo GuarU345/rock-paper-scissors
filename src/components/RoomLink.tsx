@@ -75,10 +75,10 @@ const RoomLink = ({ room, updateRooms }: Props) => {
   return (
     <>
       <a
-        className="flex font-bold items-center gap-2 rounded-t-md text-white w-full border-2 p-4 h-10 hover:border-sky-400 sm:w-1/2 md:w-1/2 xl:w-1/2 xl:p-6"
+        className="flex flex-col border-2 h-16"
         onClick={async () => await playGame(room.id)}
       >
-        {room.name}
+        <p>{room.name}</p>
         <PlayersInGame players={room.players} room={room.id} />
       </a>
     </>

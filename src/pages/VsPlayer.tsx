@@ -4,13 +4,11 @@ import Options from "../components/Options";
 import { OPTIONS_v2 } from "../constants";
 import { getGameByRoomId, getOptions } from "../services/game";
 import { GameOptions, OptionsV2, finalOptions } from "../types";
-import confetti from "canvas-confetti";
 import { BsScissors } from "react-icons/bs";
 import { GiStoneBlock } from "react-icons/gi";
 import { Link, useLocation } from "react-router-dom";
 import Modal from "../components/Modal";
 import Results from "../components/Results";
-import io from "socket.io-client";
 import { toast } from "sonner";
 import { socket } from "../socket/socket";
 
@@ -107,15 +105,17 @@ const VsPlayer = () => {
         </div>
       ) : (
         <>
-          <h1 className="text-2xl flex gap-2 justify-center font-bold text-center text-white xl:text-4xl h-[5%]">
-            <span className="text-gray-400">
-              <GiStoneBlock />
-            </span>
-            Rock Paper Scissors
-            <span className="text-red-600">
-              <BsScissors />
-            </span>
-          </h1>
+          <section className="mb-4">
+            <h1 className="text-2xl flex gap-2 justify-center font-bold text-center text-white xl:text-4xl h-[5%]">
+              <span className="text-gray-400">
+                <GiStoneBlock />
+              </span>
+              Rock Paper Scissors
+              <span className="text-red-600">
+                <BsScissors />
+              </span>
+            </h1>
+          </section>
           <main className="grid place-content-center h-[95%] pb-4 gap-y-2">
             <ul className="flex flex-col items-center pt-6 text-white gap-3 md:flex-row md:justify-center">
               {options.map((option) => (
@@ -126,11 +126,7 @@ const VsPlayer = () => {
                 ></Options>
               ))}
             </ul>
-            <Link
-              type="button"
-              to="/rooms"
-              className="text-white rounded-md text-center border-2 py-2 md:w-[32.75%] md:py-2 md:m-auto xl:w-[32.75%] xl:m-auto xl:py-4 hover:border-red-600"
-            >
+            <Link type="button" to="/rooms" className="nes-btn is-error">
               Back to rooms
             </Link>
           </main>

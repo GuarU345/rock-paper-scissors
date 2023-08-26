@@ -7,7 +7,6 @@ import Room from "./pages/Room";
 import VsPlayer from "./pages/VsPlayer";
 import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
-import useAuthStore from "./contexts/AuthContext";
 
 function App() {
   return (
