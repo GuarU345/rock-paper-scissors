@@ -1,24 +1,19 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { createRoom, getDisponibleRooms } from "../services/game";
-import { Room } from "../types";
+import { createRoom } from "../services/game";
+import { type Room } from "../types";
 import Modal from "../components/Modal";
 import RoomLink from "../components/RoomLink";
-import { Link } from "react-router-dom";
 import { socket } from "../socket/socket";
 import useAuthStore from "../contexts/AuthContext";
-import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 const Room = () => {
-  const [rooms, setRooms] = useState<Room[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const name = useRef<HTMLInputElement>(null);
-  const { getToken } = useAuthStore();
+  const { getToken, getRooms } = useAuthStore();
   const token = getToken();
 
-  const getRooms = async () => {
-    const resp = await getDisponibleRooms();
-    setRooms(resp as Room[]);
-  };
+  const rooms = getRooms();
 
   const createNewRoom = async () => {
     const body = name.current?.value;
@@ -28,7 +23,6 @@ const Room = () => {
       socket.emit("newRoomCreated");
       name.current!.value = "";
       socket.on("roomDataUpdated", async () => {
-        console.log("si llego aqui we");
         await getRooms();
       });
       closeModal();
@@ -68,25 +62,23 @@ const Room = () => {
           Create a new room
         </button>
       </div>
-      <section className="flex flex-col p-4 gap-2 h-5/6">
-        <ul className="flex flex-col gap-2 rounded-md text-white">
-          {rooms.map((room) => (
-            <RoomLink
-              key={room.id}
-              room={room}
-              updateRooms={getRooms}
-            ></RoomLink>
-          ))}
-        </ul>
-        <div className="grid place-content-center">
-          <Link
-            className="nes-btn text-white text-center border-2 p-2 hover:border-red-600"
-            to="/home"
-          >
-            Back to home
-          </Link>
-        </div>
-      </section>
+      <div className="grid place-content-center">
+        <section className="flex flex-col w-[350px] p-4 gap-2 h-5/6 md:w-[700px]">
+          <ul className="flex flex-col gap-2 rounded-md text-white">
+            {rooms.map((room) => (
+              <RoomLink key={room.id} room={room}></RoomLink>
+            ))}
+          </ul>
+          <div className="grid place-content-center">
+            <Link
+              className="nes-btn text-white text-center border-2 p-2 hover:border-red-600"
+              to="/home"
+            >
+              Back to home
+            </Link>
+          </div>
+        </section>
+      </div>
       {isOpen ? (
         <Modal handleClose={closeModal}>
           <form className="flex flex-col gap-2 p-2">

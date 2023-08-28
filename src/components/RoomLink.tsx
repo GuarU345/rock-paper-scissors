@@ -15,10 +15,9 @@ import { socket } from "../socket/socket";
 
 type Props = {
   room: Room;
-  updateRooms: () => Promise<void>;
 };
 
-const RoomLink = ({ room, updateRooms }: Props) => {
+const RoomLink = ({ room }: Props) => {
   const navigate = useNavigate();
   const { getUserInfo } = useAuthStore();
   const userInfo = getUserInfo();
@@ -72,12 +71,14 @@ const RoomLink = ({ room, updateRooms }: Props) => {
     }
   };
 
+  const handlePlay = async (event) => {
+    event.preventDefault();
+    await playGame(room.id);
+  };
+
   return (
     <>
-      <a
-        className="flex flex-col border-2 h-16"
-        onClick={async () => await playGame(room.id)}
-      >
+      <a className="flex flex-col border-2 h-16" onClick={handlePlay}>
         <p>{room.name}</p>
         <PlayersInGame players={room.players} room={room.id} />
       </a>

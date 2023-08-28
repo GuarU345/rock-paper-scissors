@@ -2,7 +2,8 @@ import { create } from "zustand";
 import { toast } from "sonner";
 import { signin } from "../services/auth";
 import { socket } from "../socket/socket";
-import { SigninBody, UserId } from "../types";
+import { Room, SigninBody, UserId } from "../types";
+import { getDisponibleRooms } from "../services/game";
 
 interface AuthStore {
   token: string | null;
@@ -10,6 +11,7 @@ interface AuthStore {
   login: (data: SigninBody, reset: () => void) => Promise<void>;
   getToken: () => string | null;
   getUserInfo: () => UserId | null;
+  getRooms: () => Room[];
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
@@ -40,6 +42,10 @@ const useAuthStore = create<AuthStore>((set) => ({
 
   getUserInfo: () => {
     return JSON.parse(localStorage.getItem("pocketbase_auth")) || null;
+  },
+
+  getRooms: async () => {
+    await getDisponibleRooms();
   },
 }));
 

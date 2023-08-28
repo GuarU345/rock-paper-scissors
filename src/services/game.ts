@@ -30,12 +30,8 @@ const newGame = async (body: GameBody) => {
 };
 
 const updateGame = async (id: string, body: GameBody) => {
-  try {
-    const { data } = await axios.patch(`${API_URL}/games/records/${id}`, body);
-    return data;
-  } catch (error) {
-    return error;
-  }
+  const { data } = await axios.patch(`${API_URL}/games/records/${id}`, body);
+  return data;
 };
 
 const getDisponibleRooms = async () => {
@@ -59,24 +55,15 @@ const getOptions = async () => {
 };
 
 const gameCreated = async (id: string) => {
-  try {
-    const { data } = await axios.get(`${API_URL}/rooms/records/${id}`);
-    return data;
-  } catch (error) {
-    return error;
-  }
+  const { data } = await axios.get(`${API_URL}/rooms/records/${id}`);
+  return data;
 };
 
 const getGameByRoomId = async (id: string) => {
-  try {
-    const { data } = await axios.get(
-      `${API_URL}/games/records/?filter=(room_id="${id}")`
-    );
-    console.log(data);
-    return data.items[0];
-  } catch (error) {
-    return error;
-  }
+  const { data } = await axios.get(
+    `${API_URL}/games/records/?filter=(room_id="${id}")`
+  );
+  return data.items[0];
 };
 
 export {

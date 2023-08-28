@@ -2,24 +2,28 @@
 import { useEffect, useState } from "react";
 import Options from "../components/Options";
 import { OPTIONS_v2 } from "../constants";
-import { getGameByRoomId, getOptions } from "../services/game";
+import { getGameByRoomId, getOptions, updateGame } from "../services/game";
 import { GameOptions, OptionsV2, finalOptions } from "../types";
 import { BsScissors } from "react-icons/bs";
 import { GiStoneBlock } from "react-icons/gi";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Modal from "../components/Modal";
-import Results from "../components/Results";
 import { toast } from "sonner";
 import { socket } from "../socket/socket";
+import useAuthStore from "../contexts/AuthContext";
 
 const VsPlayer = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [options, setOptions] = useState<finalOptions[]>([]);
   const [gameStarted, setGameStarted] = useState(false);
+  const [confirm, setConfirm] = useState(false);
   const [result, setResult] = useState("");
+  const [game, setGame] = useState("");
   const location = useLocation();
   const game_id = location.state;
-
+  const { getUserInfo } = useAuthStore();
+  const user = getUserInfo();
+  console.log(game);
   // const [text, setText] = useState("");
   // const [cpuOption,setCpuOption] = useState<JSX.Element | undefined>()
   // const [userOption, setUserOption] = useState<JSX.Element | undefined>();
@@ -47,11 +51,10 @@ const VsPlayer = () => {
   };
 
   const gameStart = async () => {
-    if (game_id === null) return;
+    if (game === null) return;
     try {
-      const resp = await getGameByRoomId(game_id);
+      const resp = await getGameByRoomId(game);
       if (resp.status === true && resp.player1 !== "") {
-        console.log("entre");
         socket.emit("game_ready");
       }
     } catch (error) {
@@ -59,8 +62,45 @@ const VsPlayer = () => {
     }
   };
 
+  const leaveRoom = () => {
+    setConfirm(true);
+  };
+
+  const confirmation = async () => {
+    //decir a los jugadores que la sala esta disponible
+    try {
+      console.log(game);
+      const resp = await getGameByRoomId(game_id);
+      console.log(resp);
+      //verificar cuantos jugadores hay en la partida
+      if (resp.status) {
+        const verifiedPlayer = user?.model.id;
+        const userInRoom = resp.player1;
+        if (userInRoom === verifiedPlayer) {
+          const body = {
+            player1: "",
+          };
+          await updateGame(resp.id, body);
+        } else {
+          const body = {
+            player2: "",
+          };
+          await updateGame(resp.id, body);
+        }
+      }
+    } catch (error) {
+      toast(`${error}`);
+    }
+  };
+
+  const handleYes = (event) => {
+    event.preventDefault();
+    confirmation();
+  };
+
   const makeChoice = (choice: string) => {
     socket.emit("choice", choice);
+    setIsOpen(true);
   };
 
   useEffect(() => {
@@ -75,6 +115,10 @@ const VsPlayer = () => {
   }, []);
 
   useEffect(() => {
+    console.log(game_id);
+    if (game_id !== null) {
+      setGame(game_id);
+    }
     gameStart();
   }, []);
 
@@ -126,24 +170,37 @@ const VsPlayer = () => {
                 ></Options>
               ))}
             </ul>
-            <Link type="button" to="/rooms" className="nes-btn is-error">
+            <button onClick={leaveRoom} className="nes-btn is-error">
               Back to rooms
-            </Link>
+            </button>
           </main>
         </>
       )}
 
       {isOpen ? (
         <div>
-          <Modal handleClose={closeModal}>
-            <Results
-              text={text}
-              user={userOption}
-              cpu={cpuOption}
-              action={closeModal}
-            />
-          </Modal>
+          <Modal handleClose={closeModal}>${result}</Modal>
         </div>
+      ) : null}
+      {confirm ? (
+        <Modal height={"h-full"} handleClose={closeModal}>
+          <div className="flex flex-col justify-center items-center gap-2 p-2">
+            <h3 className="text-white text-sm text-center">
+              you want to leave the room?
+            </h3>
+            <div className="flex">
+              <button onClick={handleYes} className="nes-btn is-success">
+                Yes
+              </button>
+              <button
+                onClick={() => setConfirm(false)}
+                className="nes-btn is-error"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </Modal>
       ) : null}
     </>
   );
