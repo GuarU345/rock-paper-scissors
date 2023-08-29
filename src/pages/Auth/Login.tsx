@@ -1,7 +1,7 @@
 import AnimationText from "../../components/AnimationText";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import useAuthStore from "../../contexts/AuthContext";
+import useAuthStore from "../../contexts/AuthStore";
 
 const Login = () => {
   const {

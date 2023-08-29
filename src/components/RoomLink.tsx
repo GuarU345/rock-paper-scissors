@@ -10,7 +10,7 @@ import {
 } from "../services/game";
 import { toast } from "sonner";
 import PlayersInGame from "./PlayersInGame";
-import useAuthStore from "../contexts/AuthContext";
+import useAuthStore from "../contexts/AuthStore";
 import { socket } from "../socket/socket";
 
 type Props = {
@@ -22,13 +22,13 @@ const RoomLink = ({ room }: Props) => {
   const { getUserInfo } = useAuthStore();
   const userInfo = getUserInfo();
 
-  const playGame = async (id: string) => {
-    const resp = await gameCreated(id);
+  const playGame = async (roomId: string) => {
+    const resp = await gameCreated(roomId);
     let body;
     if (resp.status === false) {
       body = {
         player1: userInfo?.model.id,
-        room_id: id,
+        room_id: roomId,
       };
       const updRoom = {
         status: true,
@@ -37,7 +37,7 @@ const RoomLink = ({ room }: Props) => {
       if (body === undefined) return;
       try {
         await newGame(body as GameBody);
-        await updateRoom(id, updRoom);
+        await updateRoom(roomId, updRoom);
         socket.emit("playerGoToRoom");
       } catch (error) {
         toast(`${error}`);
@@ -45,7 +45,7 @@ const RoomLink = ({ room }: Props) => {
       navigate("/vs", { state: null });
       toast("you are the player1");
     } else {
-      const exists: any = await getGameByRoomId(id);
+      const exists: any = await getGameByRoomId(roomId);
       const player = userInfo?.model.id;
       if (exists.player1 !== "" && exists.player1 != player) {
         body = {
@@ -56,14 +56,12 @@ const RoomLink = ({ room }: Props) => {
           players: 2,
         };
         try {
-          Promise.all([
-            updateGame(exists.id, body as GameBody),
-            updateRoom(id, updRoom),
-          ]);
+          await updateGame(exists.id, body as GameBody);
+          await updateRoom(roomId, updRoom);
         } catch (error) {
           toast("Something Bad");
         }
-        navigate("/vs", { state: room.id });
+        navigate("/vs", { state: roomId });
         toast("play the game");
       } else {
         toast("user in room");

@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import Modal from "../components/Modal";
 import { toast } from "sonner";
 import { socket } from "../socket/socket";
-import useAuthStore from "../contexts/AuthContext";
+import useAuthStore from "../contexts/AuthStore";
 
 const VsPlayer = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,16 +18,15 @@ const VsPlayer = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [result, setResult] = useState("");
-  const [game, setGame] = useState("");
+  const [roomId, setRoomId] = useState("");
   const location = useLocation();
-  const game_id = location.state;
+  const room_id = location.state;
+
   const { getUserInfo } = useAuthStore();
   const user = getUserInfo();
-  console.log(game);
   // const [text, setText] = useState("");
   // const [cpuOption,setCpuOption] = useState<JSX.Element | undefined>()
   // const [userOption, setUserOption] = useState<JSX.Element | undefined>();
-
   const getGameOptions = async () => {
     const resp = await getOptions();
     const data = resp
@@ -51,10 +50,11 @@ const VsPlayer = () => {
   };
 
   const gameStart = async () => {
-    if (game === null) return;
+    if (room_id === null) return;
     try {
-      const resp = await getGameByRoomId(game);
+      const resp = await getGameByRoomId(room_id);
       if (resp.status === true && resp.player1 !== "") {
+        setRoomId(resp.room_id);
         socket.emit("game_ready");
       }
     } catch (error) {
@@ -67,10 +67,10 @@ const VsPlayer = () => {
   };
 
   const confirmation = async () => {
-    //decir a los jugadores que la sala esta disponible
+    console.log(roomId);
+    if (roomId === null) return;
     try {
-      console.log(game);
-      const resp = await getGameByRoomId(game_id);
+      const resp = await getGameByRoomId(roomId);
       console.log(resp);
       //verificar cuantos jugadores hay en la partida
       if (resp.status) {
@@ -115,10 +115,6 @@ const VsPlayer = () => {
   }, []);
 
   useEffect(() => {
-    console.log(game_id);
-    if (game_id !== null) {
-      setGame(game_id);
-    }
     gameStart();
   }, []);
 

@@ -4,16 +4,16 @@ import { type Room } from "../types";
 import Modal from "../components/Modal";
 import RoomLink from "../components/RoomLink";
 import { socket } from "../socket/socket";
-import useAuthStore from "../contexts/AuthContext";
+import useAuthStore from "../contexts/AuthStore";
 import { Link } from "react-router-dom";
+import { useRoomStore } from "../contexts/RoomStore";
 
 const Room = () => {
   const [isOpen, setIsOpen] = useState(false);
   const name = useRef<HTMLInputElement>(null);
-  const { getToken, getRooms } = useAuthStore();
+  const { getToken } = useAuthStore();
+  const { rooms, getRooms } = useRoomStore();
   const token = getToken();
-
-  const rooms = getRooms();
 
   const createNewRoom = async () => {
     const body = name.current?.value;

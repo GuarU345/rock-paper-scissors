@@ -35,14 +35,8 @@ const updateGame = async (id: string, body: GameBody) => {
 };
 
 const getDisponibleRooms = async () => {
-  try {
-    const { data } = await axios.get<Response<Room>>(
-      `${API_URL}/rooms/records`
-    );
-    return data.items.filter((r) => r.players < 2);
-  } catch (error) {
-    return error;
-  }
+  const { data } = await axios.get<Response<Room>>(`${API_URL}/rooms/records`);
+  return data.items.filter((r) => r.players < 2);
 };
 
 const getOptions = async () => {
