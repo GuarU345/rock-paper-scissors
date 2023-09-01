@@ -19,8 +19,7 @@ type Props = {
 
 const RoomLink = ({ room }: Props) => {
   const navigate = useNavigate();
-  const { getUserInfo } = useAuthStore();
-  const userInfo = getUserInfo();
+  const { userInfo } = useAuthStore();
 
   const playGame = async (roomId: string) => {
     const resp = await gameCreated(roomId);

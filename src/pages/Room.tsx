@@ -11,9 +11,8 @@ import { useRoomStore } from "../contexts/RoomStore";
 const Room = () => {
   const [isOpen, setIsOpen] = useState(false);
   const name = useRef<HTMLInputElement>(null);
-  const { getToken } = useAuthStore();
+  const { token } = useAuthStore();
   const { rooms, getRooms } = useRoomStore();
-  const token = getToken();
 
   const createNewRoom = async () => {
     const body = name.current?.value;

@@ -22,8 +22,7 @@ const VsPlayer = () => {
   const location = useLocation();
   const room_id = location.state;
 
-  const { getUserInfo } = useAuthStore();
-  const user = getUserInfo();
+  const { userInfo } = useAuthStore();
   // const [text, setText] = useState("");
   // const [cpuOption,setCpuOption] = useState<JSX.Element | undefined>()
   // const [userOption, setUserOption] = useState<JSX.Element | undefined>();
@@ -74,7 +73,7 @@ const VsPlayer = () => {
       console.log(resp);
       //verificar cuantos jugadores hay en la partida
       if (resp.status) {
-        const verifiedPlayer = user?.model.id;
+        const verifiedPlayer = userInfo?.model.id;
         const userInRoom = resp.player1;
         if (userInRoom === verifiedPlayer) {
           const body = {
@@ -100,7 +99,6 @@ const VsPlayer = () => {
 
   const makeChoice = (choice: string) => {
     socket.emit("choice", choice);
-    setIsOpen(true);
   };
 
   useEffect(() => {
@@ -175,9 +173,10 @@ const VsPlayer = () => {
 
       {isOpen ? (
         <div>
-          <Modal handleClose={closeModal}>${result}</Modal>
+          <Modal handleClose={closeModal}>{result}</Modal>
         </div>
       ) : null}
+
       {confirm ? (
         <Modal height={"h-full"} handleClose={closeModal}>
           <div className="flex flex-col justify-center items-center gap-2 p-2">

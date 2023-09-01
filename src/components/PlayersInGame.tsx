@@ -8,7 +8,7 @@ type Props = {
   room: string;
 };
 
-const PlayersInGame = ({ players, room }: Props) => {
+const PlayersInGame = ({ room }: Props) => {
   const [countPlayers, setCountPlayers] = useState(0);
 
   const countPlayersOnRoom = async () => {

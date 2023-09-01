@@ -8,13 +8,12 @@ interface AuthStore {
   token: string | null;
   userInfo: UserId | null;
   login: (data: SigninBody, reset: () => void) => Promise<void>;
-  getToken: () => string | null;
-  getUserInfo: () => UserId | null;
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
   token: localStorage.getItem("token") || null,
-  userInfo: JSON.parse(localStorage.getItem("pocketbase_auth")) || null,
+  userInfo:
+    JSON.parse(localStorage.getItem("pocketbase_auth") as string) || null,
 
   login: async (data: SigninBody, reset: () => void) => {
     try {
@@ -32,14 +31,6 @@ const useAuthStore = create<AuthStore>((set) => ({
   logout: async () => {
     localStorage.removeItem("token");
     localStorage.removeItem("pocketbase_auth");
-  },
-
-  getToken: () => {
-    return localStorage.getItem("token") || null;
-  },
-
-  getUserInfo: () => {
-    return JSON.parse(localStorage.getItem("pocketbase_auth")) || null;
   },
 }));
 
