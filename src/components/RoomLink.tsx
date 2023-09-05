@@ -68,8 +68,7 @@ const RoomLink = ({ room }: Props) => {
     }
   };
 
-  const handlePlay = async (event) => {
-    event.preventDefault();
+  const handlePlay = async () => {
     await playGame(room.id);
   };
 

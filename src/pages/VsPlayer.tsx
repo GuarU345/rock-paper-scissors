@@ -92,8 +92,7 @@ const VsPlayer = () => {
     }
   };
 
-  const handleYes = (event) => {
-    event.preventDefault();
+  const handleYes = () => {
     confirmation();
   };
 

@@ -2,6 +2,7 @@ import AnimationText from "../../components/AnimationText";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../../contexts/AuthStore";
+import { SigninBody } from "../../types";
 
 const Login = () => {
   const {
@@ -16,7 +17,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (data) => {
-    login(data, reset);
+    login(data as SigninBody, reset);
     navigate("/home");
   });
 
