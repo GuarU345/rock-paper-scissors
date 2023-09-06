@@ -35,7 +35,9 @@ const updateGame = async (id: string, body: GameBody) => {
 };
 
 const getDisponibleRooms = async () => {
-  const { data } = await axios.get<Response<Room>>(`${API_URL}/rooms/records`);
+  const { data } = await axios.get<Response<Room>>(
+    `${API_URL}/rooms/records?sort=-created`
+  );
   return data.items.filter((r) => r.players < 2);
 };
 

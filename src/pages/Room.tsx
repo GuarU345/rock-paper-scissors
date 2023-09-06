@@ -63,7 +63,7 @@ const Room = () => {
       </div>
       <div className="grid place-content-center">
         <section className="flex flex-col w-[350px] p-4 gap-2 h-5/6 md:w-[700px]">
-          <ul className="flex flex-col gap-2 rounded-md text-white">
+          <ul className="flex flex-col overflow-scroll gap-2 rounded-md text-white">
             {rooms.map((room) => (
               <RoomLink key={room.id} room={room}></RoomLink>
             ))}
