@@ -31,11 +31,6 @@ const useAuthStore = create<AuthStore>((set) => ({
       toast.error(`${error}`);
     }
   },
-
-  logout: async () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("pocketbase_auth");
-  },
 }));
 
 export default useAuthStore;

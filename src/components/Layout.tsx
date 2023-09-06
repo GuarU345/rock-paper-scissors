@@ -1,13 +1,14 @@
 import { ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../contexts/AuthStore";
+import { socket } from "../socket/socket";
 
 type Props = {
   children?: ReactElement;
 };
 
 const Layout = ({ children }: Props) => {
-  const { token, setToken } = useAuthStore();
+  const { token, setToken, setUserInfo } = useAuthStore();
 
   const navigate = useNavigate();
 
@@ -15,6 +16,8 @@ const Layout = ({ children }: Props) => {
     localStorage.removeItem("token");
     localStorage.removeItem("pocketbase_auth");
     setToken(null);
+    setUserInfo(null);
+    socket.disconnect();
     navigate("/");
   };
 

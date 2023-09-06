@@ -1,6 +1,6 @@
 import AnimationText from "../../components/AnimationText";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import useAuthStore from "../../contexts/AuthStore";
 import { SigninBody } from "../../types";
 
@@ -14,11 +14,9 @@ const Login = () => {
 
   const { login } = useAuthStore();
 
-  const navigate = useNavigate();
-
   const onSubmit = handleSubmit(async (data) => {
     login(data as SigninBody, reset);
-    navigate("/home");
+    <Navigate to={"/home"} />;
   });
 
   return (
