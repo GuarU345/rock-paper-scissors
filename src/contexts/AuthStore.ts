@@ -12,6 +12,7 @@ interface AuthStore {
 
 const useAuthStore = create<AuthStore>((set) => ({
   token: localStorage.getItem("token") || null,
+  setToken: (newToken: string | null) => set({ token: newToken }),
   userInfo:
     JSON.parse(localStorage.getItem("pocketbase_auth") as string) || null,
 
