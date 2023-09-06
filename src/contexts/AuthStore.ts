@@ -7,12 +7,15 @@ import { SigninBody, UserId } from "../types";
 interface AuthStore {
   token: string | null;
   userInfo: UserId | null;
+  setToken: (newToken: string | null) => void;
+  setUserInfo: (newInfo: UserId | null) => void;
   login: (data: SigninBody, reset: () => void) => Promise<void>;
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
   token: localStorage.getItem("token") || null,
-  setToken: (newToken: string | null) => set({ token: newToken }),
+  setToken: (newToken) => set({ token: newToken }),
+  setUserInfo: (newInfo) => set({ userInfo: newInfo }),
   userInfo:
     JSON.parse(localStorage.getItem("pocketbase_auth") as string) || null,
 
