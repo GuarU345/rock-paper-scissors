@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import AnimationText from "../components/AnimationText";
+import Layout from "../components/Layout";
 
 const Home = () => {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -18,15 +19,17 @@ const Home = () => {
 
   return (
     <>
-      <section className="grid place-content-center h-screen">
-        <AnimationText />
-        <Link type="button" to="/game" className="nes-btn text-base">
-          PLAY GAME
-        </Link>
-        <Link type="button" to="/rooms" className="nes-btn text-base">
-          ONLINE GAME
-        </Link>
-      </section>
+      <Layout>
+        <section className="grid place-content-center h-screen">
+          <AnimationText />
+          <Link type="button" to="/game" className="nes-btn text-base">
+            PLAY GAME
+          </Link>
+          <Link type="button" to="/rooms" className="nes-btn text-base">
+            ONLINE GAME
+          </Link>
+        </section>
+      </Layout>
     </>
   );
 };

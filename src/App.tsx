@@ -7,16 +7,21 @@ import Room from "./pages/Room";
 import VsPlayer from "./pages/VsPlayer";
 import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
+import useAuthStore from "./contexts/AuthStore";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 function App() {
+  const { token } = useAuthStore();
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/signin" />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/vs" element={<VsPlayer />} />
-          <Route path="/rooms" element={<Room />} />
+          <Route element={<ProtectedRoutes isAllowed={token as string} />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/vs" element={<VsPlayer />} />
+            <Route path="/rooms" element={<Room />} />
+          </Route>
           <Route path="/game" element={<Game />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/signin" element={<Login />} />

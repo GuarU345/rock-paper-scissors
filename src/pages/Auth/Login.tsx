@@ -26,7 +26,7 @@ const Login = () => {
       <section className="flex flex-col justify-center h-screen p-4">
         <AnimationText />
         <div className="sm:grid sm:place-content-center">
-          <h3 className="text-2xl mb-2">Login</h3>
+          <h3 className="text-2xl text-white mb-2">Login</h3>
           <form className="flex flex-col gap-2" onSubmit={onSubmit}>
             <input
               className="outline-none text-sm rounded-md p-2"
