@@ -18,6 +18,7 @@ const VsPlayer = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [result, setResult] = useState("");
+  const [result2, setResult2] = useState("");
   const [roomId, setRoomId] = useState("");
   const location = useLocation();
   const room_id = location.state;
@@ -42,6 +43,13 @@ const VsPlayer = () => {
       )
       .filter((r: any) => r !== undefined);
     setOptions(data);
+  };
+
+  const restartGame = () => {
+    setResult("");
+    setResult2("");
+    setIsOpen(false);
+    socket.emit("continue_game");
   };
 
   const closeModal = () => {
@@ -106,8 +114,18 @@ const VsPlayer = () => {
       setGameStarted(true);
     });
 
-    socket.on("game_result", (gameResult: string) => {
-      setResult(gameResult);
+    socket.on("game_result", (gameResult, gameResult2) => {
+      if (gameResult.userId === userInfo?.model.id) {
+        setResult(gameResult.win);
+      }
+      if (gameResult2.userId === userInfo?.model.id) {
+        setResult2(gameResult2.win);
+      }
+      setIsOpen(true);
+    });
+
+    socket.on("restart_game", () => {
+      console.log("reiniciando juego...");
     });
   }, []);
 
@@ -174,7 +192,19 @@ const VsPlayer = () => {
 
       {isOpen ? (
         <div>
-          <Modal handleClose={closeModal}>{result}</Modal>
+          <Modal height={"h-full"} handleClose={closeModal}>
+            <div className="grid place-content-center gap-4 text-white">
+              <section>
+                <h4 className="text-center">{result}</h4>
+              </section>
+              <section>
+                <h4 className="text-center">{result2}</h4>
+              </section>
+              <button className="nes-btn" onClick={restartGame}>
+                Restart Game?
+              </button>
+            </div>
+          </Modal>
         </div>
       ) : null}
 

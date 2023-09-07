@@ -5,14 +5,10 @@ import { Room, Response, Game, GameBody } from "../types";
 const API_URL = "https://rps-db.pockethost.io/api/collections";
 
 const createRoom = async (body: string) => {
-  try {
-    const { data } = await axios.post<Room>(`${API_URL}/rooms/records`, {
-      name: body,
-    });
-    return data;
-  } catch (error) {
-    return error;
-  }
+  const { data } = await axios.post<Room>(`${API_URL}/rooms/records`, {
+    name: body,
+  });
+  return data;
 };
 
 const updateRoom = async (id: string, room: any) => {
@@ -21,12 +17,8 @@ const updateRoom = async (id: string, room: any) => {
 };
 
 const newGame = async (body: GameBody) => {
-  try {
-    const { data } = await axios.post<Game>(`${API_URL}/games/records`, body);
-    return data;
-  } catch (error) {
-    return error;
-  }
+  const { data } = await axios.post<Game>(`${API_URL}/games/records`, body);
+  return data;
 };
 
 const updateGame = async (id: string, body: GameBody) => {
@@ -42,12 +34,8 @@ const getDisponibleRooms = async () => {
 };
 
 const getOptions = async () => {
-  try {
-    const { data } = await axios.get(`${API_URL}/options/records`);
-    return data.items;
-  } catch (error) {
-    return error;
-  }
+  const { data } = await axios.get(`${API_URL}/options/records`);
+  return data.items;
 };
 
 const gameCreated = async (id: string) => {
