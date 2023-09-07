@@ -12,6 +12,7 @@ import Auth from "./components/Auth";
 
 function App() {
   const { token } = useAuthStore();
+
   return (
     <>
       <BrowserRouter>

@@ -76,7 +76,19 @@ export interface SigninBody {
 }
 
 export interface UserId {
+  token: string;
   model: {
+    avatar: string;
+    collectionId: string;
+    collectionName: string;
+    created: string;
+    email: string;
+    emailVisibility: boolean;
     id: string;
+    name: string;
+    updated: string;
+    username: string;
+    verified: boolean;
+    expand: Record<string>;
   };
 }

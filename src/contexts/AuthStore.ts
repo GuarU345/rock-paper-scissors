@@ -12,12 +12,15 @@ interface AuthStore {
   login: (data: SigninBody, reset: () => void) => Promise<void>;
 }
 
+const userInfoInLS = JSON.parse(
+  localStorage.getItem("pocketbase_auth") as string
+);
+
 const useAuthStore = create<AuthStore>((set) => ({
   token: localStorage.getItem("token") || null,
   setToken: (newToken) => set({ token: newToken }),
   setUserInfo: (newInfo) => set({ userInfo: newInfo }),
-  userInfo:
-    JSON.parse(localStorage.getItem("pocketbase_auth") as string) || null,
+  userInfo: userInfoInLS,
 
   login: async (data: SigninBody, reset: () => void) => {
     try {
