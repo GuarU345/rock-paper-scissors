@@ -96,8 +96,8 @@ const VsPlayer = () => {
     confirmation();
   };
 
-  const makeChoice = (choice: string) => {
-    socket.emit("choice", choice);
+  const makeChoice = (choice: string, user: string) => {
+    socket.emit("choice", choice, user);
   };
 
   useEffect(() => {
@@ -157,7 +157,9 @@ const VsPlayer = () => {
             <ul className="flex flex-col items-center pt-6 text-white gap-3 md:flex-row md:justify-center">
               {options.map((option) => (
                 <Options
-                  action={() => makeChoice(option.name)}
+                  action={() =>
+                    makeChoice(option.name, userInfo?.model.id as string)
+                  }
                   icon={option.element}
                   key={option.id}
                 ></Options>
