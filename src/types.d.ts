@@ -75,7 +75,7 @@ export interface SigninBody {
   password: string;
 }
 
-export interface UserId {
+export interface UserInfo {
   token: string;
   model: {
     avatar: string;

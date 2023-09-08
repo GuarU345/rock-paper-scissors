@@ -1,6 +1,11 @@
-const Loading = () => {
+type Props = {
+  text?: string;
+};
+
+const Loading = ({ text }: Props) => {
   return (
-    <div className="grid h-screen place-content-center">
+    <div className="flex flex-col gap-2 h-screen text-center justify-center items-center">
+      <p className="text-white">{text}</p>
       <svg
         aria-hidden="true"
         className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -17,7 +22,7 @@ const Loading = () => {
           fill="currentFill"
         />
       </svg>
-      <span className="sr-only">Loading...</span>
+      <span className="sr-only text-white">Loading...</span>
     </div>
   );
 };
