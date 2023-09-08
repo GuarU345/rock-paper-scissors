@@ -24,7 +24,7 @@ const VsPlayer = () => {
   const location = useLocation();
   const room_id = location.state;
 
-  const { userInfo } = useAuthStore();
+  const { userId } = useAuthStore();
   // const [text, setText] = useState("");
   // const [cpuOption,setCpuOption] = useState<JSX.Element | undefined>()
   // const [userOption, setUserOption] = useState<JSX.Element | undefined>();
@@ -82,7 +82,7 @@ const VsPlayer = () => {
       console.log(resp);
       //verificar cuantos jugadores hay en la partida
       if (resp.status) {
-        const verifiedPlayer = userInfo?.model.id;
+        const verifiedPlayer = userId;
         const userInRoom = resp.player1;
         if (userInRoom === verifiedPlayer) {
           const body = {
@@ -116,10 +116,15 @@ const VsPlayer = () => {
     });
 
     socket.on("game_result", (gameResult, gameResult2) => {
-      if (gameResult.userId === userInfo?.model.id) {
+      if (gameResult === "Empate") {
+        setResult(gameResult);
+        setIsOpen(true);
+        return;
+      }
+      if (gameResult.userId === userId) {
         setResult(gameResult.win);
       }
-      if (gameResult2.userId === userInfo?.model.id) {
+      if (gameResult2.userId === userId) {
         setResult2(gameResult2.win);
       }
       setIsOpen(true);
@@ -137,7 +142,7 @@ const VsPlayer = () => {
   return (
     <>
       {!gameStarted ? (
-        <Loading />
+        <Loading text={"Esperando a que ambos jugadores se conecten"} />
       ) : (
         <>
           <section className="mb-4">
@@ -155,9 +160,7 @@ const VsPlayer = () => {
             <ul className="flex flex-col items-center pt-6 text-white gap-3 md:flex-row md:justify-center">
               {options.map((option) => (
                 <Options
-                  action={() =>
-                    makeChoice(option.name, userInfo?.model.id as string)
-                  }
+                  action={() => makeChoice(option.name, userId as string)}
                   icon={option.element}
                   key={option.id}
                 ></Options>

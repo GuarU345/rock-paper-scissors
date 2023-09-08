@@ -24,7 +24,7 @@ const signin = async (body: SigninBody) => {
     const authData = await pb
       .collection("users")
       .authWithPassword(body.identity, body.password);
-    return authData.token;
+    return authData;
   } catch (error: any) {
     throw new Error(error.response.message);
   }

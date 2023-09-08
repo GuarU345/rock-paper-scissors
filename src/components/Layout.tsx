@@ -8,7 +8,7 @@ type Props = {
 };
 
 const Layout = ({ children }: Props) => {
-  const { token, setToken, setUserInfo } = useAuthStore();
+  const { setToken, setUserId } = useAuthStore();
 
   const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ const Layout = ({ children }: Props) => {
     localStorage.removeItem("token");
     localStorage.removeItem("pocketbase_auth");
     setToken(null);
-    setUserInfo(null);
+    setUserId(null);
     socket.disconnect();
     navigate("/");
   };
@@ -24,11 +24,7 @@ const Layout = ({ children }: Props) => {
   return (
     <div>
       <section className="flex justify-end p-2">
-        <button
-          disabled={!token}
-          onClick={handleLogout}
-          className="nes-btn is-error text-white"
-        >
+        <button onClick={handleLogout} className="nes-btn is-error text-white">
           Logout
         </button>
       </section>

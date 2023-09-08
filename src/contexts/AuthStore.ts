@@ -2,31 +2,29 @@ import { create } from "zustand";
 import { toast } from "sonner";
 import { signin } from "../services/auth";
 import { socket } from "../socket/socket";
-import { SigninBody, UserId } from "../types";
+import { type SigninBody } from "../types";
 
 interface AuthStore {
   token: string | null;
-  userInfo: UserId | null;
+  userId: string | null;
   setToken: (newToken: string | null) => void;
-  setUserInfo: (newInfo: UserId | null) => void;
+  setUserId: (newUserId: string | null) => void;
   login: (data: SigninBody, reset: () => void) => Promise<void>;
 }
-
-const userInfoInLS = JSON.parse(
-  localStorage.getItem("pocketbase_auth") as string
-);
 
 const useAuthStore = create<AuthStore>((set) => ({
   token: localStorage.getItem("token") || null,
   setToken: (newToken) => set({ token: newToken }),
-  setUserInfo: (newInfo) => set({ userInfo: newInfo }),
-  userInfo: userInfoInLS,
+  setUserId: (newUserId) => set({ userId: newUserId }),
+  userId: localStorage.getItem("userId") || null,
 
   login: async (data: SigninBody, reset: () => void) => {
     try {
       const response = await signin(data);
-      localStorage.setItem("token", response);
-      set({ token: response });
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("userId", response.record.id);
+      set({ token: response.token });
+      set({ userId: response.record.id });
       socket.connect();
       toast.success("Login Successfully");
       reset();

@@ -19,14 +19,14 @@ type Props = {
 
 const RoomLink = ({ room }: Props) => {
   const navigate = useNavigate();
-  const { userInfo } = useAuthStore();
+  const { userId } = useAuthStore();
 
   const playGame = async (roomId: string) => {
     const resp = await gameCreated(roomId);
     let body;
     if (resp.status === false) {
       body = {
-        player1: userInfo?.model.id,
+        player1: userId,
         room_id: roomId,
       };
       const updRoom = {
@@ -45,10 +45,10 @@ const RoomLink = ({ room }: Props) => {
       toast("you are the player1");
     } else {
       const exists: any = await getGameByRoomId(roomId);
-      const player = userInfo?.model.id;
+      const player = userId;
       if (exists.player1 !== "" && exists.player1 != player) {
         body = {
-          player2: userInfo?.model.id,
+          player2: userId,
           status: true,
         };
         const updRoom = {
