@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { FaHandRock, FaHandScissors } from "react-icons/fa";
 import { LiaToiletPaperSolid } from "react-icons/lia";
 import Loading from "../components/Loading.tsx";
+import Puntuations from "../components/Puntuations.tsx";
 
 const Game = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +20,8 @@ const Game = () => {
   const [text, setText] = useState("");
   const [userOption, setUserOption] = useState<JSX.Element | undefined>();
   const [cpuOption, setCpuOption] = useState<JSX.Element | undefined>();
+  const [userPuntuation, setUserPuntuation] = useState(0);
+  const [cpuPuntuation, setCpuPuntuation] = useState(0);
 
   const closeModal = () => {
     setIsOpen(false);
@@ -39,12 +42,14 @@ const Game = () => {
       setText("You Win");
       setUserOption(element);
       setCpuOption(cpuOption.element);
+      setUserPuntuation((userPuntuation) => userPuntuation + 1);
       return;
     }
     setIsOpen(true);
     setText("You Lost");
     setUserOption(element);
     setCpuOption(cpuOption.element);
+    setCpuPuntuation((cpuPuntuation) => cpuPuntuation + 1);
     return;
   };
 
@@ -53,6 +58,13 @@ const Game = () => {
       setLoading(false);
     }, 900);
   }, []);
+
+  useEffect(() => {
+    if (userPuntuation === 10 || cpuPuntuation === 10) {
+      setUserPuntuation(0);
+      setCpuPuntuation(0);
+    }
+  }, [cpuPuntuation, userPuntuation]);
 
   return (
     <>
@@ -69,6 +81,10 @@ const Game = () => {
               <BsScissors />
             </p>
           </h1>
+          <Puntuations
+            userPuntuation={userPuntuation}
+            cpuPuntuation={cpuPuntuation}
+          />
           <main className="grid place-content-center h-[95%] pb-4 gap-y-2">
             <ul className="flex flex-col items-center pt-6 text-white gap-3 md:flex-row md:justify-center">
               <Options
