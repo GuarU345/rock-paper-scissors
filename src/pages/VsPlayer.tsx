@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { socket } from "../socket/socket";
 import useAuthStore from "../contexts/AuthStore";
 import Loading from "../components/Loading";
+import confetti from "canvas-confetti";
 
 const VsPlayer = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -119,15 +120,27 @@ const VsPlayer = () => {
       if (gameResult === "Empate") {
         setResult(gameResult);
         setIsOpen(true);
+        setTimeout(() => {
+          restartGame();
+        }, 5000);
         return;
       }
       if (gameResult.userId === userId) {
         setResult(gameResult.win);
+        if (gameResult.win === "Ganaste") {
+          confetti();
+        }
       }
       if (gameResult2.userId === userId) {
         setResult2(gameResult2.win);
+        if (gameResult2.win === "Ganaste") {
+          confetti();
+        }
       }
       setIsOpen(true);
+      setTimeout(() => {
+        restartGame();
+      }, 5000);
     });
 
     socket.on("restart_game", () => {
@@ -183,9 +196,9 @@ const VsPlayer = () => {
               <section>
                 <h4 className="text-center">{result2}</h4>
               </section>
-              <button className="nes-btn" onClick={restartGame}>
+              {/* <button className="nes-btn" onClick={restartGame}>
                 Restart Game?
-              </button>
+              </button> */}
             </div>
           </Modal>
         </div>
