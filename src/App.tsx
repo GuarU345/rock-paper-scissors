@@ -6,10 +6,9 @@ import Game from "./pages/Game";
 import Room from "./pages/Room";
 import VsPlayer from "./pages/VsPlayer";
 import Register from "./pages/Auth/Register";
-import useAuthStore from "./contexts/AuthStore";
+import useAuthStore from "./store/AuthStore";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Auth from "./components/Auth";
-
 function App() {
   const { token } = useAuthStore();
 
