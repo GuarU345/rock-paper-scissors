@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Modal from "../components/Modal";
+import Modal from "../shared/Modal.tsx";
 import Options from "../components/Options.tsx";
 import confetti from "canvas-confetti";
 import Results from "../components/Results.tsx";

@@ -10,7 +10,7 @@ import {
 } from "../services/game";
 import { toast } from "sonner";
 import PlayersInGame from "./PlayersInGame";
-import useAuthStore from "../contexts/AuthStore";
+import useAuthStore from "../store/AuthStore";
 import { socket } from "../socket/socket";
 
 type Props = {
@@ -24,12 +24,13 @@ const RoomLink = ({ room }: Props) => {
   const playGame = async (roomId: string) => {
     const resp = await gameCreated(roomId);
     let body;
+    let updRoom;
     if (resp.status === false) {
       body = {
         player1: userId,
         room_id: roomId,
       };
-      const updRoom = {
+      updRoom = {
         status: true,
         players: 1,
       };
@@ -51,7 +52,23 @@ const RoomLink = ({ room }: Props) => {
           player2: userId,
           status: true,
         };
-        const updRoom = {
+        updRoom = {
+          players: 2,
+        };
+        try {
+          await updateGame(exists.id, body as GameBody);
+          await updateRoom(roomId, updRoom);
+        } catch (error) {
+          toast("Something Bad");
+        }
+        navigate("/vs", { state: roomId });
+        toast("play the game");
+      } else if (exists.player2 !== "" && exists.player2 != player) {
+        body = {
+          player1: userId,
+          status: true,
+        };
+        updRoom = {
           players: 2,
         };
         try {

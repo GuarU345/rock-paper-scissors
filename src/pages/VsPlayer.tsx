@@ -2,15 +2,20 @@
 import { useEffect, useState } from "react";
 import Options from "../components/Options";
 import { OPTIONS_v2 } from "../constants";
-import { getGameByRoomId, getOptions, updateGame } from "../services/game";
+import {
+  getGameByRoomId,
+  getOptions,
+  updateGame,
+  updateRoom,
+} from "../services/game";
 import { GameOptions, OptionsV2, finalOptions } from "../types";
 import { BsScissors } from "react-icons/bs";
 import { GiStoneBlock } from "react-icons/gi";
-import { useLocation } from "react-router-dom";
-import Modal from "../components/Modal";
+import { useLocation, useNavigate } from "react-router-dom";
+import Modal from "../shared/Modal";
 import { toast } from "sonner";
 import { socket } from "../socket/socket";
-import useAuthStore from "../contexts/AuthStore";
+import useAuthStore from "../store/AuthStore";
 import Loading from "../components/Loading";
 import confetti from "canvas-confetti";
 
@@ -26,6 +31,7 @@ const VsPlayer = () => {
   const room_id = location.state;
 
   const { userId } = useAuthStore();
+  const navigate = useNavigate();
   // const [text, setText] = useState("");
   // const [cpuOption,setCpuOption] = useState<JSX.Element | undefined>()
   // const [userOption, setUserOption] = useState<JSX.Element | undefined>();
@@ -59,12 +65,15 @@ const VsPlayer = () => {
   };
 
   const gameStart = async () => {
+    console.log(room_id);
     if (room_id === null) return;
     try {
       const resp = await getGameByRoomId(room_id);
-      if (resp.status === true && resp.player1 !== "") {
-        setRoomId(resp.room_id);
-        socket.emit("game_ready");
+      if (
+        (resp.status === true && resp.player1 !== "") ||
+        (resp.status === true && resp.player2 !== "")
+      ) {
+        socket.emit("game_ready", room_id);
       }
     } catch (error) {
       toast(`${error}`);
@@ -76,11 +85,9 @@ const VsPlayer = () => {
   };
 
   const confirmation = async () => {
-    console.log(roomId);
     if (roomId === null) return;
     try {
       const resp = await getGameByRoomId(roomId);
-      console.log(resp);
       //verificar cuantos jugadores hay en la partida
       if (resp.status) {
         const verifiedPlayer = userId;
@@ -88,13 +95,27 @@ const VsPlayer = () => {
         if (userInRoom === verifiedPlayer) {
           const body = {
             player1: "",
+            status: false,
+          };
+          const updRoom = {
+            players: 1,
           };
           await updateGame(resp.id, body);
+          await updateRoom(roomId, updRoom);
+          socket.emit("leave_room");
+          navigate("/rooms");
         } else {
           const body = {
             player2: "",
+            status: false,
+          };
+          const updRoom = {
+            players: 1,
           };
           await updateGame(resp.id, body);
+          await updateRoom(roomId, updRoom);
+          socket.emit("leave_room");
+          navigate("/rooms");
         }
       }
     } catch (error) {
@@ -112,7 +133,8 @@ const VsPlayer = () => {
 
   useEffect(() => {
     getGameOptions();
-    socket.on("game_start", () => {
+    socket.on("game_start", (actualRoomId) => {
+      setRoomId(actualRoomId);
       setGameStarted(true);
     });
 
@@ -133,9 +155,6 @@ const VsPlayer = () => {
       }
       if (gameResult2.userId === userId) {
         setResult2(gameResult2.win);
-        if (gameResult2.win === "Ganaste") {
-          confetti();
-        }
       }
       setIsOpen(true);
       setTimeout(() => {
@@ -145,6 +164,11 @@ const VsPlayer = () => {
 
     socket.on("restart_game", () => {
       console.log("reiniciando juego...");
+    });
+
+    socket.on("leave_room", () => {
+      setConfirm(false);
+      setGameStarted(false);
     });
   }, []);
 

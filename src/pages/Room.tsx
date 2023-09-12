@@ -1,12 +1,12 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { createRoom } from "../services/game";
 import { type Room } from "../types";
-import Modal from "../components/Modal";
+import Modal from "../shared/Modal";
 import RoomLink from "../components/RoomLink";
 import { socket } from "../socket/socket";
-import useAuthStore from "../contexts/AuthStore";
+import useAuthStore from "../store/AuthStore";
 import { Link } from "react-router-dom";
-import { useRoomStore } from "../contexts/RoomStore";
+import { useRoomStore } from "../store/RoomStore";
 
 const Room = () => {
   const [isOpen, setIsOpen] = useState(false);

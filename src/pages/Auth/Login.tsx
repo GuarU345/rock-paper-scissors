@@ -1,10 +1,11 @@
 import AnimationText from "../../components/AnimationText";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import useAuthStore from "../../contexts/AuthStore";
+import useAuthStore from "../../store/AuthStore";
 import { SigninBody } from "../../types";
 import { useState } from "react";
 import Loading from "../../components/Loading";
+import { useSongStore } from "../../store/SongStore";
 
 const Login = () => {
   const {
@@ -16,10 +17,12 @@ const Login = () => {
 
   const { login } = useAuthStore();
   const [authenticated, isAuthenticated] = useState(false);
+  const { playMusic } = useSongStore();
 
   const onSubmit = handleSubmit(async (data) => {
     login(data as SigninBody, reset);
     isAuthenticated(true);
+    playMusic();
   });
 
   return (
