@@ -50,6 +50,13 @@ const getGameByRoomId = async (id: string) => {
   return data.items[0];
 };
 
+const getPuntuations = async (id: string) => {
+  const { data } = await axios.get(
+    `${API_URL}/puntuations/records/?filter=(game_id="${id}")`
+  );
+  return data;
+};
+
 export {
   createRoom,
   updateRoom,
@@ -59,4 +66,5 @@ export {
   getOptions,
   gameCreated,
   getGameByRoomId,
+  getPuntuations,
 };
