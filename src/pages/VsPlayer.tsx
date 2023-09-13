@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import Options from "../components/Options";
@@ -133,43 +134,55 @@ const VsPlayer = () => {
 
   useEffect(() => {
     getGameOptions();
-    socket.on("game_start", (actualRoomId) => {
+
+    const handleGameStart = (actualRoomId: string) => {
       setRoomId(actualRoomId);
       setGameStarted(true);
-    });
+    };
 
-    socket.on("game_result", (gameResult, gameResult2) => {
+    const handleGameResult = (gameResult: any, gameResult2: any) => {
       if (gameResult === "Empate") {
         setResult(gameResult);
         setIsOpen(true);
-        setTimeout(() => {
-          restartGame();
-        }, 5000);
+        setTimeout(restartGame, 5000);
         return;
       }
+
       if (gameResult.userId === userId) {
         setResult(gameResult.win);
         if (gameResult.win === "Ganaste") {
           confetti();
         }
       }
+
       if (gameResult2.userId === userId) {
         setResult2(gameResult2.win);
       }
+
       setIsOpen(true);
-      setTimeout(() => {
-        restartGame();
-      }, 5000);
-    });
+      setTimeout(restartGame, 5000);
+    };
 
-    socket.on("restart_game", () => {
+    const handleRestartGame = () => {
       console.log("reiniciando juego...");
-    });
+    };
 
-    socket.on("leave_room", () => {
+    const handleLeaveRoom = () => {
       setConfirm(false);
       setGameStarted(false);
-    });
+    };
+
+    socket.on("game_start", handleGameStart);
+    socket.on("game_result", handleGameResult);
+    socket.on("restart_game", handleRestartGame);
+    socket.on("leave_room", handleLeaveRoom);
+
+    return () => {
+      socket.off("game_start", handleGameStart);
+      socket.off("game_result", handleGameResult);
+      socket.off("restart_game", handleRestartGame);
+      socket.off("leave_room", handleLeaveRoom);
+    };
   }, []);
 
   useEffect(() => {
