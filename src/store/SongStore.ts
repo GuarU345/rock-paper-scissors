@@ -12,6 +12,7 @@ const sound = new Howl({
   src: ["electroman.mp3"],
   html5: true,
   loop: true,
+  volume: 0.1,
 });
 
 export const useSongStore = create<State>(() => ({
