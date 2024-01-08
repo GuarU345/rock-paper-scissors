@@ -13,6 +13,7 @@ import { FaHandRock, FaHandScissors } from "react-icons/fa";
 import { LiaToiletPaperSolid } from "react-icons/lia";
 import Loading from "../components/Loading.tsx";
 import Puntuations from "../components/Puntuations.tsx";
+import { toast } from "sonner";
 
 const Game = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,6 +64,7 @@ const Game = () => {
     if (userPuntuation === 10 || cpuPuntuation === 10) {
       setUserPuntuation(0);
       setCpuPuntuation(0);
+      toast("Se ha llegado a la puntuacion maxima");
     }
   }, [cpuPuntuation, userPuntuation]);
 
@@ -86,7 +88,7 @@ const Game = () => {
             cpuPuntuation={cpuPuntuation}
           />
           <main className="grid place-content-center h-[95%] pb-4 gap-y-2">
-            <ul className="flex flex-col items-center pt-6 text-white gap-3 md:flex-row md:justify-center">
+            <ul className="flex flex-col items-center text-white gap-3 md:flex-row md:justify-center">
               <Options
                 action={() => game(OPTIONS.rock.value, OPTIONS.rock.element)}
                 icon={<FaHandRock />}

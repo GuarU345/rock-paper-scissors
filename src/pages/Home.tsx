@@ -32,9 +32,11 @@ const Home = () => {
           <Link type="button" to="/game" className="nes-btn text-base">
             PLAY GAME
           </Link>
-          <Link type="button" to="/rooms" className="nes-btn text-base">
-            ONLINE GAME
-          </Link>
+          {!import.meta.env.VITE_IsProd ? (
+            <Link type="button" to="/rooms" className="nes-btn text-base">
+              ONLINE GAME
+            </Link>
+          ) : null}
           <button onClick={() => setIsOpen(true)} className="nes-btn">
             CONFIGURATION
           </button>

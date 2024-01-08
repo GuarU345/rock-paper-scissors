@@ -16,13 +16,21 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/signin" />} />
-          <Route element={<ProtectedRoutes isAllowed={token as string} />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/vs" element={<VsPlayer />} />
-            <Route path="/rooms" element={<Room />} />
-          </Route>
-          <Route path="/game" element={<Game />} />
+          {import.meta.env.VITE_IsProd ? (
+            <>
+              <Route path="/" element={<Navigate to="/home" />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/game" element={<Game />} />
+            </>
+          ) : (
+            <Route element={<ProtectedRoutes isAllowed={token as string} />}>
+              <Route path="/" element={<Navigate to="/signin" />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/vs" element={<VsPlayer />} />
+              <Route path="/rooms" element={<Room />} />
+            </Route>
+          )}
+
           <Route path="/signup" element={<Register />} />
           <Route
             path="/signin"

@@ -5,11 +5,14 @@ type Props = {
 
 const Puntuations = ({ userPuntuation, cpuPuntuation }: Props) => {
   return (
-    <section className="flex text-white gap-2 ml-10">
-      <h1>Player</h1>
-      <span>{userPuntuation}</span>
-      <h1>Cpu</h1>
-      <span>{cpuPuntuation}</span>
+    <section className="flex text-xs text-center text-white gap-4 justify-center mb-5">
+      <h5 className="border-2 rounded-md p-2">
+        Player: <span>{userPuntuation}</span>
+      </h5>
+      <p></p>
+      <h5 className="border-2 rounded-md p-2">
+        Cpu: <span>{cpuPuntuation}</span>
+      </h5>
     </section>
   );
 };

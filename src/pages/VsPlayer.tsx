@@ -33,9 +33,6 @@ const VsPlayer = () => {
 
   const { userId } = useAuthStore();
   const navigate = useNavigate();
-  // const [text, setText] = useState("");
-  // const [cpuOption,setCpuOption] = useState<JSX.Element | undefined>()
-  // const [userOption, setUserOption] = useState<JSX.Element | undefined>();
   const getGameOptions = async () => {
     const resp = await getOptions();
     const data = resp
@@ -66,7 +63,6 @@ const VsPlayer = () => {
   };
 
   const gameStart = async () => {
-    console.log(room_id);
     if (room_id === null) return;
     try {
       const resp = await getGameByRoomId(room_id);

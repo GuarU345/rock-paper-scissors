@@ -56,7 +56,12 @@ const Register = () => {
           {errors.exampleRequired?.type === "required" && (
             <span className="red">este campo es requerido</span>
           )}
-          <button className="text-white border-2">Add</button>
+          <button
+            className="nes-btn"
+            disabled={import.meta.env.VITE_IsProd ? true : false}
+          >
+            Add
+          </button>
         </form>
       </div>
       <Link className="text-white text-center mt-2" to="/signin">

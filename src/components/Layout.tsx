@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/AuthStore";
 import { socket } from "../socket/socket";
@@ -41,9 +41,14 @@ const Layout = ({ children }: Props) => {
         <button onClick={handleVolumeMute} className="nes-btn">
           {actualVolume == 0 ? <BsVolumeUp /> : <BsVolumeMute />}
         </button>
-        <button onClick={handleLogout} className="nes-btn is-error text-white">
-          Logout
-        </button>
+        {!import.meta.env.VITE_IsProd ? (
+          <button
+            onClick={handleLogout}
+            className="nes-btn is-error text-white"
+          >
+            Logout
+          </button>
+        ) : null}
       </section>
       {children}
     </div>

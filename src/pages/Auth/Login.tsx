@@ -49,7 +49,12 @@ const Login = () => {
               {errors.exampleRequired?.type === "required" && (
                 <span className="red">este campo es requerido</span>
               )}
-              <button className="nes-btn">Login</button>
+              <button
+                className="nes-btn"
+                disabled={import.meta.env.VITE_IsProd ? true : false}
+              >
+                Login
+              </button>
               <Link to="/signup" className="text-white text-center">
                 Dont have account? Signup!
               </Link>
