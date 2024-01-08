@@ -3,6 +3,8 @@ import { Howl } from "howler";
 
 interface State {
   sound: Howl;
+  isPlaying: boolean;
+  setIsPlaying: (state: boolean) => void;
   playMusic: () => void;
   stopMusic: () => void;
   changeVolume: (param: number | null) => void;
@@ -15,8 +17,10 @@ const sound = new Howl({
   volume: 0.1,
 });
 
-export const useSongStore = create<State>(() => ({
+export const useSongStore = create<State>((set) => ({
   sound: sound,
+  isPlaying: false,
+  setIsPlaying: (state: boolean) => set({ isPlaying: state }),
   playMusic: () => {
     sound.play();
   },

@@ -27,12 +27,12 @@ const Layout = ({ children }: Props) => {
 
   const handleVolumeMute = () => {
     if (sound.volume() == 0) {
-      changeVolume(1);
+      changeVolume(actualVolume);
       setActualVolume(sound.volume());
       return;
     }
-    changeVolume(0);
     setActualVolume(sound.volume());
+    changeVolume(0);
   };
 
   return (

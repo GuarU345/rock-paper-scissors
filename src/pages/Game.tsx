@@ -14,6 +14,8 @@ import { LiaToiletPaperSolid } from "react-icons/lia";
 import Loading from "../components/Loading.tsx";
 import Puntuations from "../components/Puntuations.tsx";
 import { toast } from "sonner";
+import Layout from "../components/Layout.tsx";
+import { useSongStore } from "../store/SongStore.ts";
 
 const Game = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +25,7 @@ const Game = () => {
   const [cpuOption, setCpuOption] = useState<JSX.Element | undefined>();
   const [userPuntuation, setUserPuntuation] = useState(0);
   const [cpuPuntuation, setCpuPuntuation] = useState(0);
+  const { isPlaying, setIsPlaying, playMusic } = useSongStore();
 
   const closeModal = () => {
     setIsOpen(false);
@@ -51,20 +54,28 @@ const Game = () => {
     setUserOption(element);
     setCpuOption(cpuOption.element);
     setCpuPuntuation((cpuPuntuation) => cpuPuntuation + 1);
-    return;
   };
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
+      if (isPlaying) {
+        return;
+      }
+      playMusic();
+      setIsPlaying(true);
     }, 900);
   }, []);
 
   useEffect(() => {
-    if (userPuntuation === 10 || cpuPuntuation === 10) {
+    if (userPuntuation === 10) {
+      toast("User win game");
       setUserPuntuation(0);
       setCpuPuntuation(0);
-      toast("Se ha llegado a la puntuacion maxima");
+    } else if (cpuPuntuation === 10) {
+      toast("Cpu win game");
+      setUserPuntuation(0);
+      setCpuPuntuation(0);
     }
   }, [cpuPuntuation, userPuntuation]);
 
@@ -73,48 +84,52 @@ const Game = () => {
       {loading ? (
         <Loading />
       ) : (
-        <>
-          <h1 className="gap-2 flex justify-center font-bold text-center text-white xl:text-4xl xl:gap-2 h-[5%]">
-            <p className="text-gray-400">
-              <GiStoneBlock />
-            </p>
-            Rock Paper Scissors
-            <p className="text-red-600">
-              <BsScissors />
-            </p>
-          </h1>
-          <Puntuations
-            userPuntuation={userPuntuation}
-            cpuPuntuation={cpuPuntuation}
-          />
-          <main className="grid place-content-center h-[95%] pb-4 gap-y-2">
-            <ul className="flex flex-col items-center text-white gap-3 md:flex-row md:justify-center">
-              <Options
-                action={() => game(OPTIONS.rock.value, OPTIONS.rock.element)}
-                icon={<FaHandRock />}
-              />
-              <Options
-                action={() => game(OPTIONS.paper.value, OPTIONS.paper.element)}
-                icon={<LiaToiletPaperSolid />}
-              />
-              <Options
-                action={() =>
-                  game(OPTIONS.scissors.value, OPTIONS.scissors.element)
-                }
-                icon={<FaHandScissors />}
-              />
-            </ul>
-            <div className="flex justify-center">
-              <Link
-                type="button"
-                to="/home"
-                className="nes-btn md:w-[32.75%] md:py-2 md:m-auto xl:w-[32.75%] xl:m-auto xl:py-4 is-error"
-              >
-                Back to home
-              </Link>
-            </div>
-          </main>
-        </>
+        <Layout>
+          <>
+            <h1 className="gap-2 flex justify-center font-bold text-center text-white xl:text-4xl xl:gap-2 h-[5%]">
+              <p className="text-gray-400">
+                <GiStoneBlock />
+              </p>
+              Rock Paper Scissors
+              <p className="text-red-600">
+                <BsScissors />
+              </p>
+            </h1>
+            <Puntuations
+              userPuntuation={userPuntuation}
+              cpuPuntuation={cpuPuntuation}
+            />
+            <main className="grid place-content-center h-[95%] pb-4 gap-y-2">
+              <ul className="flex flex-col items-center text-white gap-3 md:flex-row md:justify-center">
+                <Options
+                  action={() => game(OPTIONS.rock.value, OPTIONS.rock.element)}
+                  icon={<FaHandRock />}
+                />
+                <Options
+                  action={() =>
+                    game(OPTIONS.paper.value, OPTIONS.paper.element)
+                  }
+                  icon={<LiaToiletPaperSolid />}
+                />
+                <Options
+                  action={() =>
+                    game(OPTIONS.scissors.value, OPTIONS.scissors.element)
+                  }
+                  icon={<FaHandScissors />}
+                />
+              </ul>
+              <div className="flex justify-center">
+                <Link
+                  type="button"
+                  to="/home"
+                  className="nes-btn md:w-[32.75%] md:py-2 md:m-auto xl:w-[32.75%] xl:m-auto xl:py-4 is-error"
+                >
+                  Back to home
+                </Link>
+              </div>
+            </main>
+          </>
+        </Layout>
       )}
 
       {isOpen ? (
