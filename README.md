@@ -1,1 +1,1 @@
-# Juego De Piedra, Papel, Tijeras Online
+# Juego De Piedra, Papel, Tijeras
