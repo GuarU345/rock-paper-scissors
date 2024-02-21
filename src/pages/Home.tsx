@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import AnimationText from "../components/AnimationText";
 import Layout from "../components/Layout";
-import Modal from "../shared/Modal";
-import ConfigurationModal from "../shared/ConfigurationModal";
+import Modal from "../components/Modal";
+import ConfigurationModal from "../modals/Configuration";
 
 const Home = () => {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -27,7 +27,7 @@ const Home = () => {
   return (
     <>
       <Layout>
-        <section className="grid place-content-center h-screen xl:overflow-scroll">
+        <section className="grid place-content-center xl:mt-10">
           <AnimationText />
           <Link type="button" to="/game" className="nes-btn text-base">
             PLAY GAME

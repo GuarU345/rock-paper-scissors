@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { createRoom } from "../services/game";
 import { type Room } from "../types";
-import Modal from "../shared/Modal";
+import Modal from "../components/Modal";
 import RoomLink from "../components/RoomLink";
 import { socket } from "../socket/socket";
 import useAuthStore from "../store/AuthStore";

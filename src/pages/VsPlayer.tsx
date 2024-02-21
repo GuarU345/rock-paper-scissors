@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import Options from "../components/Options";
-import { OPTIONS_v2 } from "../constants";
+import { OPTIONS_v2 } from "../utils/constants";
 import {
   getGameByRoomId,
   getOptions,
@@ -13,7 +13,7 @@ import { GameOptions, OptionsV2, finalOptions } from "../types";
 import { BsScissors } from "react-icons/bs";
 import { GiStoneBlock } from "react-icons/gi";
 import { useLocation, useNavigate } from "react-router-dom";
-import Modal from "../shared/Modal";
+import Modal from "../components/Modal";
 import { toast } from "sonner";
 import { socket } from "../socket/socket";
 import useAuthStore from "../store/AuthStore";

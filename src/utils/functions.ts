@@ -1,6 +1,6 @@
-import { OPTIONS } from "../constants";
+import { OPTIONS } from "./constants";
 
-const generateOptionOfCpu = () => {
+export const generateOptionOfCpu = () => {
   const optionSelected = Math.floor(Math.random() * (4 - 1) + 1);
   if (optionSelected === 1) {
     const { value, element } = OPTIONS.rock;
@@ -13,5 +13,3 @@ const generateOptionOfCpu = () => {
     return { value, element };
   }
 };
-
-export { generateOptionOfCpu };

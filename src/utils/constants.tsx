@@ -37,4 +37,10 @@ const WINNER_OPTIONS: { [index: number]: number } = {
   2: 1, //papel le gana piedra
 };
 
-export { OPTIONS, WINNER_OPTIONS, OPTIONS_v2 };
+const RESULTS_TEXT = {
+  DRAW: "Draw",
+  WIN: "You Win",
+  LOST: "You Lost"
+}
+
+export { OPTIONS, WINNER_OPTIONS, OPTIONS_v2, RESULTS_TEXT };

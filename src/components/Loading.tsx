@@ -4,7 +4,7 @@ type Props = {
 
 const Loading = ({ text }: Props) => {
   return (
-    <div className="flex flex-col gap-2 h-screen text-center justify-center items-center">
+    <div className="flex flex-col gap-2 h-full text-center justify-center items-center">
       <p className="text-white">{text}</p>
       <svg
         aria-hidden="true"

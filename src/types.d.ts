@@ -59,7 +59,7 @@ export interface GameOptions {
 export interface finalOptions {
   name: string;
   value: number;
-  element: ReactNode;
+  element: JSX.Element;
   id: string;
 }
 
