@@ -27,7 +27,7 @@ export const Configuration = () => {
   };
   return (
     <Modal handleClose={hideModal}>
-      <div className="flex flex-col gap-2 p-2 bg-black border-2 rounded-lg">
+      <div className="flex flex-col gap-2 p-4 bg-black border-2 rounded-lg">
         <section
           className="flex flex-row justify-end  text-red-600"
           onClick={hideModal}

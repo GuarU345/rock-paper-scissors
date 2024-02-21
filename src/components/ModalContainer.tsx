@@ -13,5 +13,5 @@ export function ModalContainer() {
     return <Component {...props} />
   };
 
-  return isOpen && renderModal()
+  return isOpen ? renderModal() : null
 }
