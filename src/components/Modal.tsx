@@ -5,7 +5,7 @@ type Props = {
   height?: string;
 };
 
-const Modal = ({ children, handleClose, height }: PropsWithChildren<Props>) => {
+const Modal = ({ children, handleClose }: PropsWithChildren<Props>) => {
   const close = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
       handleClose();

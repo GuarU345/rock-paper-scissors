@@ -26,7 +26,7 @@ const Layout = ({ children }: Props) => {
   };
 
   const handleVolumeMute = () => {
-    if (sound.volume() == 0) {
+    if (sound.volume() === 0) {
       changeVolume(actualVolume);
       setActualVolume(sound.volume());
       return;
@@ -39,7 +39,7 @@ const Layout = ({ children }: Props) => {
     <div>
       <section className="flex justify-end p-2">
         <button onClick={handleVolumeMute} className="nes-btn">
-          {actualVolume == 0 ? <BsVolumeUp /> : <BsVolumeMute />}
+          {actualVolume === 0 ? <BsVolumeUp /> : <BsVolumeMute />}
         </button>
         {!import.meta.env.VITE_IsProd ? (
           <button

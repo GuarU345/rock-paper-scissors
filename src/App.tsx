@@ -10,8 +10,9 @@ import useAuthStore from "./store/AuthStore";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Auth from "./components/Auth";
 import { ModalContainer } from "./components/ModalContainer";
+
 function App() {
-  const { token } = useAuthStore();
+  const { token } = useAuthStore()
 
   return (
     <>

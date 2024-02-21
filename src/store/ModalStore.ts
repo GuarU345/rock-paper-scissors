@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { RESULTMODALID } from "../utils/modal-ids";
+import { CONFIGMODALID, RESULTMODALID } from "../utils/modal-ids";
 import { Results } from "../modals/Results"
+import { Configuration } from "../modals/Configuration";
 
 interface ModalState {
     id: string | symbol
@@ -23,7 +24,8 @@ interface Actions {
 }
 
 const modals = {
-    [RESULTMODALID]: Results
+    [RESULTMODALID]: Results,
+    [CONFIGMODALID]: Configuration
 }
 
 export const useModalStore = create<State & Actions>((set) => ({

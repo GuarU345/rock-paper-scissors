@@ -1,17 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import AnimationText from "../components/AnimationText";
 import Layout from "../components/Layout";
-import Modal from "../components/Modal";
-import ConfigurationModal from "../modals/Configuration";
+import { CONFIGMODALID } from "../utils/modal-ids";
+import { useModalStore } from "../store/ModalStore";
 
 const Home = () => {
   const elementRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  const { showModal } = useModalStore()
 
   useEffect(() => {
     if (elementRef.current) {
@@ -27,7 +23,7 @@ const Home = () => {
   return (
     <>
       <Layout>
-        <section className="grid place-content-center xl:mt-10">
+        <section className="grid place-content-center mt-20">
           <AnimationText />
           <Link type="button" to="/game" className="nes-btn text-base">
             PLAY GAME
@@ -37,14 +33,9 @@ const Home = () => {
               ONLINE GAME
             </Link>
           ) : null}
-          <button onClick={() => setIsOpen(true)} className="nes-btn">
+          <button onClick={() => showModal(CONFIGMODALID)} className="nes-btn">
             CONFIGURATION
           </button>
-          {isOpen ? (
-            <Modal handleClose={closeModal}>
-              <ConfigurationModal handleClose={closeModal} />
-            </Modal>
-          ) : null}
         </section>
       </Layout>
     </>
